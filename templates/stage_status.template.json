@@ -1,0 +1,21 @@
+{
+  "project_id": "replace-me",
+  "workflow_version": "2.0.0",
+  "current_stage": "00_PROJECT_INIT",
+  "stages": {
+    "00_PROJECT_INIT": {"status": "NOT_STARTED"},
+    "01_SYNOPSIS_CONTEXT": {"status": "NOT_STARTED"},
+    "02_SCRIPT": {"status": "NOT_STARTED", "last_completed_unit": 0, "next_unit": 1},
+    "03_SCRIPT_AUDIT": {"status": "NOT_STARTED"},
+    "04_CHARACTER_CLASSIFICATION": {"status": "NOT_STARTED"},
+    "05_CHARACTER_SHEETS": {"status": "NOT_STARTED"},
+    "06_CHARACTER_IMAGES": {"status": "NOT_STARTED"},
+    "07_VISUAL_PREPROCESS": {"status": "NOT_STARTED"},
+    "08_VISUALIZATION": {"status": "NOT_STARTED", "last_completed_unit": 0, "next_unit": 1},
+    "09_VISUAL_AUDIT": {"status": "NOT_STARTED"},
+    "10_FLOW": {"status": "NOT_STARTED"},
+    "11_VIDEO": {"status": "NOT_STARTED"},
+    "12_METADATA": {"status": "NOT_STARTED"},
+    "13_RELEASE": {"status": "NOT_STARTED"}
+  }
+}

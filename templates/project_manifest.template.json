@@ -1,0 +1,33 @@
+{
+  "project_id": "replace-me",
+  "title": "작품명",
+  "format": "single_feature_film",
+  "workflow_version": "2.0.0",
+  "workflow_git_sha": "TBD",
+  "targets": {
+    "runtime_minutes_min": 120,
+    "runtime_minutes_max": 180,
+    "script_chars_with_spaces_min": 63000,
+    "script_chars_with_spaces_max": 68000,
+    "script_chunks": 21,
+    "visual_chunks": 21,
+    "visual_scenes_per_chunk_max": 25
+  },
+  "execution": {
+    "auto_continue_chunks": true,
+    "require_user_approval_per_chunk": false,
+    "checkpoint_after_every_chunk": true,
+    "cumulative_audit_after_chunks": [5, 10, 15, 20],
+    "connector_retry_seconds": [30, 60, 120]
+  },
+  "character_images": {
+    "main_characters_only": true,
+    "quality": "Medium",
+    "fixed_korean_name_at_top": true
+  },
+  "google_docs": {
+    "document_id": "TBD",
+    "url": "TBD",
+    "single_document": true
+  }
+}

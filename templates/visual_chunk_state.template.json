@@ -1,0 +1,16 @@
+{
+  "visual_chunk": 1,
+  "of": 21,
+  "status": "NOT_STARTED",
+  "first_script_sentence_id": "",
+  "last_script_sentence_id": "",
+  "next_script_sentence_id": "",
+  "first_scene_number": 1,
+  "last_scene_number": 0,
+  "cumulative_scene_count": 0,
+  "cta_inserted": false,
+  "end_inserted": false,
+  "characters": {},
+  "validation": {"mapped_sentence_count": 0, "missing_dialogue_ids": [], "errors": [], "warnings": []},
+  "output_sha256": ""
+}

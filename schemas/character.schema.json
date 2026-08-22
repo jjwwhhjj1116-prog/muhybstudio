@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wuxia-studio.local/schemas/character.schema.json",
+  "title": "Character Sheet",
+  "type": "object",
+  "required": ["id", "fixedKoName", "importance", "visualAnchor", "continuity"],
+  "properties": {
+    "id": {"type": "string"},
+    "fixedKoName": {"type": "string", "minLength": 1},
+    "enName": {"type": "string"},
+    "importance": {"enum": ["main", "support"]},
+    "age": {"type": ["integer", "string", "null"]},
+    "gender": {"type": ["string", "null"]},
+    "affiliation": {"type": ["string", "null"]},
+    "role": {"type": ["string", "null"]},
+    "visualAnchor": {"type": "string", "minLength": 1},
+    "ttsEmotions": {"type": "array", "items": {"enum": ["내추럴", "화남", "슬픔", "기쁨", "행복", "놀람", "FIRM"]}},
+    "imageAssets": {
+      "type": "object",
+      "properties": {
+        "quality": {"enum": ["Medium"]},
+        "sheet": {"type": ["string", "null"]},
+        "faceReference": {"type": ["string", "null"]},
+        "fullBodyReference": {"type": ["string", "null"]}
+      }
+    },
+    "continuity": {
+      "type": "object",
+      "properties": {
+        "injuries": {"type": "array", "items": {"type": "string"}},
+        "weapons": {"type": "array", "items": {"type": "string"}},
+        "possessions": {"type": "array", "items": {"type": "string"}},
+        "costumeStates": {"type": "array", "items": {"type": "string"}},
+        "forbiddenMutations": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"importance": {"const": "main"}}},
+      "then": {"required": ["imageAssets"]}
+    },
+    {
+      "if": {"properties": {"importance": {"const": "support"}}},
+      "then": {
+        "properties": {
+          "imageAssets": {
+            "properties": {
+              "sheet": {"const": null},
+              "faceReference": {"const": null},
+              "fullBodyReference": {"const": null}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

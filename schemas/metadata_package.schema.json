@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wuxia-studio.local/schemas/metadata_package.schema.json",
+  "title": "YouTube Wuxia Metadata Package",
+  "type": "object",
+  "required": ["titles", "thumbnails", "descriptionSections", "timeline", "hashtags", "signature"],
+  "properties": {
+    "titles": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {"$ref": "#/$defs/titleQuestion"},
+        {"$ref": "#/$defs/titleDirect"},
+        {"$ref": "#/$defs/titleNumber"}
+      ]
+    },
+    "thumbnails": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["titleIndex", "copy", "visualPromise"],
+        "properties": {
+          "titleIndex": {"type": "integer", "minimum": 1, "maximum": 3},
+          "copy": {"type": "string", "maxLength": 14},
+          "visualPromise": {"type": "string"}
+        }
+      }
+    },
+    "descriptionSections": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {"type": "object", "required": ["order", "name", "content"]}
+    },
+    "timeline": {"type": "array", "minItems": 5, "maxItems": 8, "items": {"type": "object", "required": ["time", "label"]}},
+    "hashtags": {"type": "array", "minItems": 12, "maxItems": 12, "uniqueItems": true, "items": {"type": "string", "pattern": "^#"}},
+    "signature": {"const": "🗡️ 무협스튜디오 — 강호는 멈추지 않는다."}
+  },
+  "$defs": {
+    "titleBase": {
+      "type": "object",
+      "required": ["type", "text", "scriptEvidence", "clickPromise", "hiddenInformation"],
+      "properties": {
+        "type": {"type": "string"},
+        "text": {"type": "string", "minLength": 15, "maxLength": 100},
+        "scriptEvidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "clickPromise": {"type": "string"},
+        "hiddenInformation": {"type": "string"}
+      }
+    },
+    "titleQuestion": {"allOf": [{"$ref": "#/$defs/titleBase"}, {"properties": {"type": {"const": "의문형"}, "text": {"pattern": "\\?"}}}]},
+    "titleDirect": {"allOf": [{"$ref": "#/$defs/titleBase"}, {"properties": {"type": {"const": "직설형"}}}]},
+    "titleNumber": {"allOf": [{"$ref": "#/$defs/titleBase"}, {"properties": {"type": {"const": "숫자·역전형"}, "text": {"pattern": "[0-9]"}}}]}
+  }
+}

@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.venv/
+reports/tmp/
+exports/
+*.zip
+projects/*
+!projects/_template/
+!projects/_template/README.md
