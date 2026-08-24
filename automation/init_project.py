@@ -25,7 +25,7 @@ def main() -> int:
 
     for rel in [
         "canon", "synopsis", "script/chunks", "script/state",
-        "characters/main/images", "visualization/chunks", "visualization/state",
+        "characters/main/sheets", "characters/main/flow_refs", "visualization/chunks", "visualization/state",
         "flow", "video", "metadata", "reports", "exports",
     ]:
         (target / rel).mkdir(parents=True, exist_ok=True)

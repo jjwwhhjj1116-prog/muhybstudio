@@ -1,0 +1,16 @@
+{
+  "characters": [
+    {
+      "story_name": "CHARACTER_KEY",
+      "registered_name": "CHARACTER_KEY_STATE_01",
+      "image": "FLOW_REFERENCE_FILE_01",
+      "state": "STATE_DESCRIPTION_01"
+    },
+    {
+      "story_name": "CHARACTER_KEY",
+      "registered_name": "CHARACTER_KEY_STATE_02",
+      "image": "FLOW_REFERENCE_FILE_02",
+      "state": "STATE_DESCRIPTION_02"
+    }
+  ]
+}

@@ -41,6 +41,7 @@ REQUIRED = [
     "automation/build_video_from_visual.py",
     "templates/project_manifest.template.json",
     "templates/stage_status.template.json",
+    "templates/flow_character_registry.template.json",
 ]
 
 CORE_ASSERTIONS = {

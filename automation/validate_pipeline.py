@@ -22,7 +22,15 @@ EN_RE = re.compile(r"^\s*\[영어 이미지 프롬프트\]\s*(.*)$")
 LABEL_RE = re.compile(r"^\s*\[[^\]]+\]")
 DIALOGUE_RE = re.compile(r"\[[^|\]]+\|[^\]]+\]\"[^\"]+\"")
 SILENT_MARKERS = {"[CTA]", "[END]"}
-STYLE_PREFIX = "Korean dark-fantasy martial-arts action manhwa webtoon style"
+STYLE_PREFIXES = (
+    "Korean dark-fantasy martial-arts action manhwa webtoon style",
+    "Korean dark-fantasy wuxia action manhwa",
+)
+LAYOUT_INDUCER_RE = re.compile(
+    r"\b(?:character sheet|model sheet|reference board|turnaround|split screen|"
+    r"collage|multi-panel|contact sheet|grid layout|lineup)\b",
+    re.IGNORECASE,
+)
 GENERIC_ERROR_RE = re.compile(
     r"(?:I'm sorry|I cannot|I can't|unable to|as an AI|죄송(?:합니다|하지만)?|생성할 수 없|도와드릴 수 없)",
     re.IGNORECASE,
@@ -74,8 +82,12 @@ def parse_visual(text: str) -> tuple[list[Scene], list[Issue], dict[str, int]]:
             issues.append(Issue("ERROR", "visual_missing_ko", "한국어 번역이 없습니다.", f"scene:{current}"))
         if not en:
             issues.append(Issue("ERROR", "visual_missing_en", "영어 이미지 프롬프트가 없습니다.", f"scene:{current}"))
-        if en and not en.startswith(STYLE_PREFIX):
+        if en and not en.startswith(STYLE_PREFIXES):
             issues.append(Issue("ERROR", "visual_style_prefix", "고정 화풍 문구로 시작하지 않습니다.", f"scene:{current}"))
+        if en and LAYOUT_INDUCER_RE.search(en):
+            issues.append(Issue("ERROR", "visual_layout_inducer", "캐릭터시트·분할·격자 구성을 유도하는 표현이 있습니다.", f"scene:{current}"))
+        if len(en) > 1400:
+            issues.append(Issue("ERROR", "visual_prompt_too_long", f"영어 프롬프트가 {len(en)}자입니다. 최대 1400자입니다.", f"scene:{current}"))
         if GENERIC_ERROR_RE.search(ko + " " + en):
             issues.append(Issue("ERROR", "generic_error_text", "범용 오류·거절 문구가 있습니다.", f"scene:{current}"))
         scenes.append(Scene(current, ko, en))
@@ -142,7 +154,50 @@ def validate_flow(text: str, scenes: list[Scene]) -> tuple[list[str], list[Issue
             issues.append(Issue("ERROR", "flow_label", "Flow에 라벨 또는 CTA·END가 남았습니다.", f"flow:{index}"))
         if GENERIC_ERROR_RE.search(block):
             issues.append(Issue("ERROR", "flow_generic_error", "범용 오류·거절 문구가 있습니다.", f"flow:{index}"))
+        if index <= len(scenes) and block != scenes[index - 1].en:
+            issues.append(Issue("ERROR", "flow_visual_mismatch", "시각화 영어 프롬프트와 완전히 일치하지 않습니다.", f"flow:{index}"))
     return blocks, issues
+
+
+def validate_character_registry(path: Path, scenes: list[Scene]) -> list[Issue]:
+    issues: list[Issue] = []
+    try:
+        data = json.loads(read(path))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        return [Issue("ERROR", "character_registry_read", f"Flow 캐릭터 등록표를 읽을 수 없습니다: {exc}")]
+    entries = data.get("characters")
+    if not isinstance(entries, list) or not entries:
+        return [Issue("ERROR", "character_registry_empty", "characters 배열이 비어 있습니다.")]
+
+    registered: list[str] = []
+    by_story: dict[str, list[str]] = {}
+    for index, item in enumerate(entries, 1):
+        if not isinstance(item, dict):
+            issues.append(Issue("ERROR", "character_registry_item", "등록 항목이 객체가 아닙니다.", f"character:{index}"))
+            continue
+        story_name = str(item.get("story_name", "")).strip()
+        registered_name = str(item.get("registered_name", "")).strip()
+        image = str(item.get("image", "")).strip()
+        state = str(item.get("state", "")).strip()
+        if not all((story_name, registered_name, image, state)):
+            issues.append(Issue("ERROR", "character_registry_fields", "story_name, registered_name, image, state가 모두 필요합니다.", f"character:{index}"))
+            continue
+        if not registered_name.startswith(story_name) or registered_name == story_name:
+            issues.append(Issue("ERROR", "character_registry_name", "등록명은 기본 이름에 상태 접미사를 붙여야 합니다.", f"character:{index}"))
+        registered.append(registered_name)
+        by_story.setdefault(story_name, []).append(registered_name)
+
+    if len(registered) != len(set(registered)):
+        issues.append(Issue("ERROR", "character_registry_duplicate", "중복된 Flow 등록명이 있습니다."))
+
+    for scene in scenes:
+        masked = scene.en
+        for name in sorted(registered, key=len, reverse=True):
+            masked = masked.replace(name, "")
+        for story_name in by_story:
+            if story_name in masked:
+                issues.append(Issue("ERROR", "visual_bare_character_name", f"상태 접미사가 없는 기본 이름 {story_name}이 있습니다.", f"scene:{scene.number}"))
+    return issues
 
 
 def validate_video(text: str, scenes: list[Scene], minimum_words: int, maximum_words: int) -> tuple[list[str], list[Issue]]:
@@ -205,6 +260,7 @@ def main() -> int:
     parser.add_argument("--flow", type=Path)
     parser.add_argument("--video", type=Path)
     parser.add_argument("--metadata", type=Path)
+    parser.add_argument("--character-registry", type=Path)
     parser.add_argument("--expected-scenes", type=int)
     parser.add_argument("--video-min-words", type=int, default=40)
     parser.add_argument("--video-max-words", type=int, default=120)
@@ -228,6 +284,11 @@ def main() -> int:
         else:
             flow_blocks, found = validate_flow(read(args.flow), scenes)
             issues.extend(found)
+    if args.character_registry:
+        if not scenes:
+            issues.append(Issue("ERROR", "registry_needs_visual", "등록명 검수에는 --visual이 필요합니다."))
+        else:
+            issues.extend(validate_character_registry(args.character_registry, scenes))
     if args.video:
         if not scenes:
             issues.append(Issue("ERROR", "video_needs_visual", "영상 검수에는 --visual이 필요합니다."))
