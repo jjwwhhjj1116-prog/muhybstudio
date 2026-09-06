@@ -1,19 +1,21 @@
 {
+  "schema_version": "3.0",
+  "episode_id": null,
   "chunk": 1,
   "of": 21,
+  "subchunk": null,
   "status": "NOT_STARTED",
-  "target_chars_with_spaces": {"min": 3000, "max": 3250},
-  "actual_chars_with_spaces": 0,
-  "start_location_time": "",
-  "end_location_time": "",
-  "last_two_actions": [],
-  "next_start_action": "",
+  "source_version": null,
+  "source_sentence_ids": [],
+  "last_scene_excerpt_file": null,
   "characters": {},
-  "world_state": {},
-  "open_foreshadowing": [],
-  "resolved_foreshadowing": [],
-  "fixed_dialogue_used": [],
-  "structure_markers_cumulative": {},
-  "validation": {"errors": [], "warnings": []},
-  "output_sha256": ""
+  "knowledge": {},
+  "relationships": {},
+  "open_threads": [],
+  "validation": {
+    "errors": [],
+    "editorial": [],
+    "unresolved": []
+  },
+  "output_sha256": null
 }

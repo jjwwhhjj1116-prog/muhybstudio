@@ -2,10 +2,16 @@ __pycache__/
 *.py[cod]
 .DS_Store
 .env
+.env.*
+!.env.example
 .venv/
+.local/
 reports/tmp/
 exports/
 *.zip
+*.mp4
+*.wav
+*.mp3
 projects/*
 !projects/_template/
 !projects/_template/README.md

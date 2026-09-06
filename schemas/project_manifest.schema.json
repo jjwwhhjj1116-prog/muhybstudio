@@ -1,67 +1,92 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wuxia-studio.local/schemas/project_manifest.schema.json",
-  "title": "Wuxia Production Project Manifest",
+  "title": "V13 project manifest",
   "type": "object",
-  "required": ["schemaVersion", "projectId", "title", "format", "production", "stages"],
+  "required": [
+    "schema_version",
+    "project_id",
+    "title",
+    "format",
+    "workflow_version",
+    "workflow_git_sha",
+    "targets",
+    "execution",
+    "character_images",
+    "video",
+    "google_docs",
+    "private_sync"
+  ],
   "properties": {
-    "schemaVersion": {"const": "1.0"},
-    "projectId": {"type": "string", "minLength": 1},
-    "title": {"type": "string", "minLength": 1},
-    "format": {"enum": ["feature_film", "episode", "compilation"]},
-    "production": {
-      "type": "object",
-      "required": ["targetRuntimeMinutes", "targetCharacters", "scriptChunkCount", "visualChunkMaxScenes"],
-      "properties": {
-        "targetRuntimeMinutes": {"type": "integer", "minimum": 1},
-        "targetCharacters": {
-          "type": "object",
-          "required": ["countWhitespace", "min", "max"],
-          "properties": {
-            "countWhitespace": {"const": true},
-            "min": {"type": "integer", "minimum": 1},
-            "max": {"type": "integer", "minimum": 1}
-          }
-        },
-        "scriptChunkCount": {"type": "integer", "minimum": 1},
-        "visualChunkMaxScenes": {"type": "integer", "minimum": 1, "maximum": 25},
-        "sceneSentenceTarget": {"type": "string", "default": "2-3"},
-        "characterImageQuality": {"const": "Medium"},
-        "videoEngine": {"type": "string", "default": "Google Flow"}
-      }
+    "schema_version": {
+      "const": "3.0"
     },
-    "canonDocuments": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["id", "title", "priority", "revision"],
-        "properties": {
-          "id": {"type": "string"},
-          "title": {"type": "string"},
-          "priority": {"type": "integer", "minimum": 1},
-          "revision": {"type": "string"},
-          "hash": {"type": "string"},
-          "path": {"type": "string"}
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "format": {
+      "const": "episodic-animation"
+    },
+    "workflow_version": {
+      "const": "3.0.0"
+    },
+    "workflow_git_sha": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "targets": {
+      "type": "object",
+      "required": [
+        "episode_count",
+        "episode_target_minutes",
+        "script_chunks",
+        "allow_subchunks"
+      ],
+      "properties": {
+        "episode_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "episode_target_minutes": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "runtime_tolerance_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "script_chunks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allow_subchunks": {
+          "type": "boolean"
         }
       }
     },
-    "stages": {
-      "type": "object",
-      "required": ["synopsis", "script", "characters", "visualization", "flow", "video", "metadata", "audit"],
-      "additionalProperties": {"$ref": "#/$defs/stage"}
-    }
-  },
-  "$defs": {
-    "stage": {
-      "type": "object",
-      "required": ["status", "version"],
-      "properties": {
-        "status": {"enum": ["NOT_STARTED", "IN_PROGRESS", "NEEDS_REVIEW", "APPROVED", "INVALIDATED", "FAILED"]},
-        "version": {"type": "integer", "minimum": 0},
-        "approvedAt": {"type": ["string", "null"], "format": "date-time"},
-        "invalidatedReason": {"type": ["string", "null"]},
-        "outputPaths": {"type": "array", "items": {"type": "string"}}
-      }
+    "execution": {
+      "type": "object"
+    },
+    "character_images": {
+      "type": "object"
+    },
+    "video": {
+      "type": "object"
+    },
+    "google_docs": {
+      "type": "object"
+    },
+    "private_sync": {
+      "type": "object"
     }
   }
 }

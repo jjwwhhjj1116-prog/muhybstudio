@@ -1,24 +1,7 @@
-# 단계 04. 주요·보조 인물 분류
+# V13 — stages/05_CHARACTER_CLASSIFICATION.md
 
-## 주요 인물
+현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
 
-반복 등장하고 얼굴·복장 연속성이 중요하며 장면 생성 때 실제 이름 기반 이미지 레퍼런스를 붙일 인물이다. 주요 인물만 텍스트 캐릭터시트와 이미지를 만든다.
+[policy/04_CONTINUOUS_ANIMATION.md](../policy/04_CONTINUOUS_ANIMATION.md)
 
-## 보조 인물
-
-단역, 병사, 집행인, 경매 손님, 행인, 백성, 군중, 이름이 있어도 이미지 레퍼런스를 만들 필요가 없는 단발 인물이다.
-
-보조 인물에는 캐릭터시트나 이미지를 만들지 않는다. 대신 다음을 포함한 완전한 영어 외형 앵커를 작성한다.
-
-`age range, gender, body type, face, hair, clothing structure and colors, weapon or tool, posture, era and regional cues, adult/child proportions`
-
-## 출력
-
-- 주요 인물 고정 한글명 목록
-- 각 주요 인물 영문 보조명과 레퍼런스 ID 예정값
-- 보조 인물·집단 앵커 JSON
-- 이름·역할명만 사용하면 안 되는 보조 인물 금지 목록
-
-## 게이트
-
-주요 인물 누락 0, 보조 인물 이미지 대상 0, 동명이인 0, 한글 고정명 띄어쓰기 잠금.
+조연도 연속 정체성이 필요하면 실제 참조 제작. 구문서를 새 지침과 함께 적용하지 않는다. 이전 내용은 Git 이력에 보존되어 있다.

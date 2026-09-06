@@ -1,9 +1,9 @@
-# 대본 출력 계약
+# V13 — contracts/01_SCRIPT_OUTPUT_CONTRACT.md
 
-- 인코딩 UTF-8, 공백 포함 글자 수를 사용한다.
-- 본문 대사 형식은 `[화자명|감정]"대사"`다.
-- 청크 파일에는 `[청크 NN/21]`와 본문만 둔다.
-- 관리 장부, 오류 보고, 계획은 별도 JSON·보고서에 둔다.
-- 구조 표식은 전편 기준 Hook 1, CTA 1, Intro 1, Body 1, Climax 1, END 1, End 1이다.
-- CTA·END는 무음 구분자이며 장면·대사·TTS가 아니다.
-- End 마지막 내용 줄은 직접 대사이고 뒤에 공백 외 텍스트가 없어야 한다.
+현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
+
+[policy/01_WRITING.md](../policy/01_WRITING.md)
+
+[policy/06_DELIVERY.md](../policy/06_DELIVERY.md)
+
+고정 직접 대사·구조 태그 폐기, 음성 형식은 파생 단계로 이동. 구문서를 새 지침과 함께 적용하지 않는다. 이전 내용은 Git 이력에 보존되어 있다.

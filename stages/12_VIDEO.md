@@ -1,27 +1,9 @@
-# 단계 11. 영상 프롬프트
+# V13 — stages/12_VIDEO.md
 
-## 정의
+현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
 
-승인된 정지 이미지 한 장에 최소 움직임을 부여하는 간결한 영어 지시다. 이미지 프롬프트를 다시 쓰지 않는다.
+[policy/04_CONTINUOUS_ANIMATION.md](../policy/04_CONTINUOUS_ANIMATION.md)
 
-## 구조
+[policy/05_FLOW_EXECUTION.md](../policy/05_FLOW_EXECUTION.md)
 
-`Camera → Subject → Primary action → Environment reaction → End state → Short style tag`
-
-장면마다 한 카메라, 한 중심 행동, 한 종료 상태. 카메라는 slow push-in, slight pan, controlled tracking, locked close-up을 우선한다. 머리카락·옷자락·먼지·불티·안개 중 필요한 1~2개만 움직인다.
-
-## 길이
-
-40~120단어 범위, 가능한 하한에 가깝게. 플랫폼 실측으로 더 짧은 지시가 안정적이면 매니페스트가 하한을 낮출 수 있다.
-
-## 절대 금지
-
-- 오디오, TTS, 대사 음성, 립싱크, 효과음, BGM, 음악 박자, 성우 감정
-- 캐릭터시트 전체와 긴 화풍 머리말 복사
-- 얼굴·체격·전체 의상·부정어 반복
-- 여러 컷, 시간 점프, 장소 변경, 세 개 이상 사건
-- 새 능력·무기·보조 인물 발명
-
-## 출력·게이트
-
-최종 파일에는 장면 라벨·한국어·대사·검수 메모 없이 프롬프트만 두고 사이에 빈 줄 하나를 둔다. 시각화 수 = Flow 수 = 영상 수, 빈 줄 N-1, 금지 오디오 표현 0.
+간단한 이미지 움직임에서 실제 양 끝 상태·동작 설계로 변경. 구문서를 새 지침과 함께 적용하지 않는다. 이전 내용은 Git 이력에 보존되어 있다.

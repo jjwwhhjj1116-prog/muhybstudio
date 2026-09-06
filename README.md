@@ -1,61 +1,44 @@
-# 무협 장편영화 제작 워크플로우
+# 무협스튜디오 제작 워크플로우
 
-이 저장소는 16화 분량의 서사를 **한 편의 2~3시간 완결 무협영화**로 제작하기 위한 단일 실행 기준이다. 21청크는 출력 제한을 피하기 위한 기술적 분할일 뿐, 21화가 아니다.
+세 PC에서 공유하는 공통 제작 기준. 워크플로우 버전 **3.0.0**, 작가 지침 **V13**.
 
-## 새 채팅 시작 명령
+무협소설의 깊이와 격정적인 발화를 살려 대본을 집필하고, 기존 웹툰 디자인을 유지한 채 Google Flow / Omni 1.1 Flash의 시작·종료 프레임으로 행동이 이어지는 애니메이션을 만든다.
 
-새 대화나 새 에이전트는 반드시 다음 순서로 시작한다.
+## 먼저 읽기
 
-1. `AGENTS.md`
-2. `workflow/00_BOOT_SEQUENCE.md`
-3. `workflow/01_AUTHORITY_AND_CANON.md`
-4. 해당 작품의 `projects/<project>/project_manifest.json`
-5. 해당 작품의 `PROJECT_CONTEXT.md`
-6. 현재 단계에 대응하는 `stages/*.md`
-7. 직전 `state/*.json`과 승인 산출물
-8. Google Docs 대상이면 `workflow/11_DOCUMENT_CAPACITY.md`
+- [작업 계약](AGENTS.md) · [시작과 복구](workflow/00_BOOT_SEQUENCE.md)
+- [세 PC 동기화](workflow/12_THREE_PC_SYNC.md) · [현재 진행 상태](coordination/STATUS.md)
+- [작가용 짧은 지침](policy/01_WRITING.md) · [작품 기억](policy/02_STORY_MEMORY.md) · [인과·발화 검수](policy/03_REVIEW.md)
+- [연속 영상 설계](policy/04_CONTINUOUS_ANIMATION.md) · [Flow 실행 계약](policy/05_FLOW_EXECUTION.md) · [음성·편집·납품](policy/06_DELIVERY.md)
 
-위 파일을 실제로 읽지 못했으면 기억으로 작업하지 않는다.
+## 변경 원칙
 
-## 고정 제작 순서
+공개16회×약15분 / 상위21개 기술 청크를 기본으로 하되 낭독·액션 타임라인으로 길이를 결정한다. 문장 길이·어휘 횟수·대사 두 줄 제한·고정 예문·고정 직접 대사 위치를 강제하지 않는다. scene·shot·keyframe·job의 수를 같게 맞추지 않는다.
 
-`프로젝트 초기화 → 시놉시스·설정집 → 대본 21청크 → 대본 전수검수 → 캐릭터 분류 → 주요 인물 캐릭터시트 → 주요 인물 이미지 → 시각화 21청크 → 시각화 전수검수 → Flow 자동생성 → 영상 프롬프트 → 제목·설명란·썸네일 → 최종 감사·릴리스`
+집필→근거 있는 검수→기억 확정→음성/샷 시간→Flow 이미지→실제 양 끝 이미지에 맞춘 영상 지시→영상 생성·회수·QA→편집·최종 렌더로 이어진다. 상세 내용은 각 단계에서만 읽는다.
 
-## 절대 규칙
+## 설치와 점검
 
-- 작품 전체에 Hook, `[CTA]`, Intro, Climax, `[END]`, End는 각각 한 번만 둔다.
-- Hook 첫·마지막, Intro 첫·마지막, End 마지막 내용 줄은 직접 대사다.
-- 대사는 `[화자명|감정]"대사"` 형식이며 `FIRM`은 남자 주인공만 쓴다.
-- 주요 인물만 캐릭터시트와 실제 이미지를 만든다. 이미지 최상단에 정확한 한글 고정명을 넣고 품질은 Medium이다.
-- 보조 인물은 캐릭터시트와 레퍼런스 이미지를 만들지 않고 완전한 영어 외형 앵커를 시각화 프롬프트에 직접 삽입한다.
-- 시각화는 기본적으로 같은 샷의 대본 2~3문장을 한 장면으로 묶되, 직접 대사를 한 글자도 누락하지 않는다.
-- Google Docs 쓰기 전 전체 예상 문자량을 산출한다. 한 문서 수용량을 넘으면 기존 내용을 임의 축약하지 않고, 쓰기 시작 전에 연속 문서·외부 정본 구조를 확정한다.
-- Flow는 시각화에서 Python으로 전체 재생성한다.
-- 영상 프롬프트는 무음 움직임 지시다. TTS, 대사 음성, 립싱크, SFX, BGM을 쓰지 않는다.
-- 제목은 의문형·직설형·숫자/역전형 3안을 만들고, 설명란의 타임라인을 삭제하지 않는다.
+Git과 Python 3.10 이상을 사용한다. 기본 도구는 Python 표준 라이브러리만 필요하다.
 
-## 저장소 역할
+    git clone https://github.com/jjwwhhjj1116-prog/muhybstudio.git
+    cd muhybstudio
+    python automation/sync_workspace.py start
+    python automation/validate_repository.py
+    python -B -m unittest discover -s tests -v
 
-| 경로 | 역할 |
-|---|---|
-| `workflow/` | 전체 운영, 상태, 재개, 무효화, Git 규칙 |
-| `stages/` | 단계별 입력·실행·출력·금지·검수 계약 |
-| `contracts/` | 파일 형식과 1대1 매핑 계약 |
-| `templates/` | 새 작품과 청크 상태 템플릿 |
-| `automation/` | Flow·영상·검수·릴리스 자동화 |
-| `schemas/` | 구조화 데이터 JSON Schema |
-| `reference/` | 원문 지침 스냅샷; 실행 우선순위는 `workflow/01`을 따름 |
-| `projects/` | 작품별 사실과 진행 상태; 범용 규칙과 분리 |
+start는 깨끗한 main에서 fetch 후 fast-forward만 수행한다. 사용자 수정 파일을 정리하거나 임의 커밋하지 않는다. 상태만 보려면 check를 사용한다.
 
-## 검증
+    python automation/sync_workspace.py check
 
-```bash
-python3 automation/validate_repository.py
-python3 automation/validate_pipeline.py --help
-```
+## 작품은 별도 비공개 폴더
 
-원격 저장소가 연결되면 `workflow/07_GIT_PROTOCOL.md` 절차로 커밋과 푸시를 수행한다.
+    python automation/init_project.py my-series --title "작품명" --project-root ../private-projects
 
-## 공개 저장소 보안
+위 명령은 비공개 **로컬 폴더**를 만들며 비공개 원격 저장소를 생성하거나 세 PC에 작품을 전송하지 않는다. 작품 공유는 별도 비공개 저장소/저장소 연결을 정한 뒤 구성한다. 공개 저장소에는 워크플로우·일반 도구·비식별 진행 상태만 둔다.
 
-이 공개 저장소에는 범용 워크플로우·스키마·자동화만 둔다. 미공개 대본, 작품별 설정, 이미지, Google Docs ID와 진행 체크포인트는 커밋하지 않는다.
+## 확인 수준
+
+이 버전은 지침, 프로젝트 초기화, 동기화 점검, 문서/템플릿 검증과 회귀 테스트를 제공한다. Flow 생성 확장 프로그램·TTS 연결·영상 QA·편집 자동화는 아직 구현 완료가 아니다. 구판 변환기와 검수기는 [legacy/v12](legacy/v12/README.md)에 격리했다. 구명령을 호출하면 새 제작에 부적합함을 알리고 종료한다.
+
+공통 지침 변경은 검증→커밋→main 통합→push→원격 확인까지 수행한다. [변경 기록](CHANGELOG.md)과 [V13 경로 대조](migrations/v13.json)에 이력을 남긴다.

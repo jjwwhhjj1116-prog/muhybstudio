@@ -1,16 +1,14 @@
 {
-  "visual_chunk": 1,
-  "of": 21,
+  "schema_version": "3.0",
   "status": "NOT_STARTED",
-  "first_script_sentence_id": "",
-  "last_script_sentence_id": "",
-  "next_script_sentence_id": "",
-  "first_scene_number": 1,
-  "last_scene_number": 0,
-  "cumulative_scene_count": 0,
-  "cta_inserted": false,
-  "end_inserted": false,
-  "characters": {},
-  "validation": {"mapped_sentence_count": 0, "missing_dialogue_ids": [], "errors": [], "warnings": []},
-  "output_sha256": ""
+  "scene_ids": [],
+  "shot_ids": [],
+  "keyframe_ids": [],
+  "job_ids": [],
+  "source_sentence_ids": [],
+  "validation": {
+    "errors": [],
+    "unresolved": []
+  },
+  "output_sha256": null
 }

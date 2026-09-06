@@ -1,21 +1,134 @@
 {
+  "schema_version": "3.0",
   "project_id": "replace-me",
-  "workflow_version": "2.0.0",
+  "workflow_version": "3.0.0",
   "current_stage": "00_PROJECT_INIT",
   "stages": {
-    "00_PROJECT_INIT": {"status": "NOT_STARTED"},
-    "01_SYNOPSIS_CONTEXT": {"status": "NOT_STARTED"},
-    "02_SCRIPT": {"status": "NOT_STARTED", "last_completed_unit": 0, "next_unit": 1},
-    "03_SCRIPT_AUDIT": {"status": "NOT_STARTED"},
-    "04_CHARACTER_CLASSIFICATION": {"status": "NOT_STARTED"},
-    "05_CHARACTER_SHEETS": {"status": "NOT_STARTED"},
-    "06_CHARACTER_IMAGES": {"status": "NOT_STARTED"},
-    "07_VISUAL_PREPROCESS": {"status": "NOT_STARTED"},
-    "08_VISUALIZATION": {"status": "NOT_STARTED", "last_completed_unit": 0, "next_unit": 1},
-    "09_VISUAL_AUDIT": {"status": "NOT_STARTED"},
-    "10_FLOW": {"status": "NOT_STARTED"},
-    "11_VIDEO": {"status": "NOT_STARTED"},
-    "12_METADATA": {"status": "NOT_STARTED"},
-    "13_RELEASE": {"status": "NOT_STARTED"}
+    "00_PROJECT_INIT": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "01_SYNOPSIS_CONTEXT": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "02_SCRIPT": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "03_SCRIPT_AUDIT": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "04_CHARACTER_REFERENCES": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "05_VOICE_ALIGNMENT": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "06_SHOT_PLAN": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "07_FLOW_IMAGES": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "08_FLOW_VIDEOS": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "09_VISUAL_QA": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "10_EDIT_RENDER": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "11_RELEASE_QA": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "12_METADATA": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    },
+    "13_COMPILATION": {
+      "status": "NOT_STARTED",
+      "last_completed_unit": null,
+      "next_unit": null,
+      "input_versions": [],
+      "output_versions": [],
+      "accepted_by": null,
+      "validation_summary": null
+    }
   }
 }

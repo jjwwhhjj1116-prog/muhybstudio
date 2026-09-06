@@ -1,33 +1,39 @@
 {
+  "schema_version": "3.0",
   "project_id": "replace-me",
   "title": "작품명",
-  "format": "single_feature_film",
-  "workflow_version": "2.0.0",
-  "workflow_git_sha": "TBD",
+  "format": "episodic-animation",
+  "workflow_version": "3.0.0",
+  "workflow_git_sha": null,
   "targets": {
-    "runtime_minutes_min": 120,
-    "runtime_minutes_max": 180,
-    "script_chars_with_spaces_min": 63000,
-    "script_chars_with_spaces_max": 68000,
+    "episode_count": 16,
+    "episode_target_minutes": 15,
+    "runtime_tolerance_seconds": null,
     "script_chunks": 21,
-    "visual_chunks": 21,
-    "visual_scenes_per_chunk_max": 25
+    "allow_subchunks": true
   },
   "execution": {
     "auto_continue_chunks": true,
     "require_user_approval_per_chunk": false,
     "checkpoint_after_every_chunk": true,
-    "cumulative_audit_after_chunks": [5, 10, 15, 20],
-    "connector_retry_seconds": [30, 60, 120]
+    "generation_budget": null,
+    "generation_retry_limit": null
   },
   "character_images": {
-    "main_characters_only": true,
-    "quality": "Medium",
-    "fixed_korean_name_at_top": true
+    "preserve_existing_design": true,
+    "reference_assets": []
+  },
+  "video": {
+    "provider": "Google Flow",
+    "model": "Omni 1.1 Flash",
+    "capabilities_verified_at": null
   },
   "google_docs": {
-    "document_id": "TBD",
-    "url": "TBD",
-    "single_document": true
+    "document_id": null,
+    "url": null
+  },
+  "private_sync": {
+    "configured": false,
+    "remote": null
   }
 }

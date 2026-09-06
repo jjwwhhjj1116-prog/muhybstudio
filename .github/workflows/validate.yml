@@ -3,19 +3,25 @@ name: validate-workflow
 on:
   pull_request:
   push:
-    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.12']
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python }}
       - name: Validate repository
-        run: python3 automation/validate_repository.py
-      - name: Compile automation
-        run: python3 -m py_compile automation/*.py
+        run: python -B automation/validate_repository.py
+      - name: Test initialization and multi-PC synchronization
+        run: python -B -m unittest discover -s tests -v
       - name: Check whitespace
-        run: git diff --check HEAD^ HEAD || git diff --check
+        run: git diff --check

@@ -1,21 +1,9 @@
-# Flow·영상 파생 계약
+# V13 — contracts/03_DERIVED_PROMPT_CONTRACT.md
 
-## Flow
+현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
 
-`flow[i] = visualization.scene[i].english_image_prompt`
+[policy/04_CONTINUOUS_ANIMATION.md](../policy/04_CONTINUOUS_ANIMATION.md)
 
-라벨·장면 번호·CTA·END를 제거하고 내용은 임의 축약하지 않는다.
+[policy/05_FLOW_EXECUTION.md](../policy/05_FLOW_EXECUTION.md)
 
-## 영상
-
-`video[i]`는 같은 `scene_number`의 이미지를 움직이는 간단한 지시이며 새 스토리 정보를 추가하지 않는다.
-
-## 해시
-
-Flow와 영상 항목은 `source_scene_hash`를 저장한다. 시각화 장면 해시가 바뀌면 파생물은 `INVALIDATED`다.
-
-## 수량 불변식
-
-`visualization_count == flow_count == video_count == N`
-
-`flow_blank_lines == video_blank_lines == N - 1`
+장면=이미지=영상 수량 등식 폐기, 공유 키프레임·작업 연결로 교체. 구문서를 새 지침과 함께 적용하지 않는다. 이전 내용은 Git 이력에 보존되어 있다.

@@ -1,28 +1,35 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wuxia-studio.local/schemas/scene.schema.json",
-  "title": "Visualization Scene",
+  "title": "V13 semantic scene (shots and keyframes separate)",
   "type": "object",
-  "required": ["number", "scriptSentenceIds", "koText", "enImagePrompt", "continuity"],
+  "required": [
+    "scene_id",
+    "script_sentence_ids",
+    "source_version"
+  ],
   "properties": {
-    "number": {"type": "integer", "minimum": 1},
-    "scriptSentenceIds": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
-    "koText": {"type": "string", "minLength": 1},
-    "containsDialogue": {"type": "boolean"},
-    "dialogueIds": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "enImagePrompt": {"type": "string", "minLength": 1},
-    "mainCharacters": {"type": "array", "items": {"type": "string"}, "maxItems": 3},
-    "supportAnchors": {"type": "array", "items": {"type": "string", "minLength": 20}},
-    "continuity": {
-      "type": "object",
-      "properties": {
-        "location": {"type": "string"},
-        "time": {"type": "string"},
-        "injuries": {"type": "array", "items": {"type": "string"}},
-        "weaponsAndProps": {"type": "array", "items": {"type": "string"}}
+    "scene_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "script_sentence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
       }
     },
-    "sourceHash": {"type": "string"},
-    "approved": {"type": "boolean"}
+    "source_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "shot_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
   }
 }

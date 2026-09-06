@@ -1,23 +1,9 @@
-# 단계 00. 프로젝트 초기화
+# V13 — stages/00_PROJECT_INIT.md
 
-## 입력
+현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
 
-작품명, 형식, 목표 러닝타임, 목표 글자 수, 청크 수, 장르·화풍, 원본 시놉시스 또는 아이디어, 대상 Google Docs URL.
+[policy/00_OVERVIEW.md](../policy/00_OVERVIEW.md)
 
-## 실행
+[policy/06_DELIVERY.md](../policy/06_DELIVERY.md)
 
-1. `projects/_template`을 새 작품 슬러그로 복제한다.
-2. `format`을 `single_feature_film`로 잠근다.
-3. 기본값은 120~180분, 공백 포함 63,000~68,000자, 대본 21청크, 시각화 21청크다.
-4. Google Docs 문서 ID·탭 구조·개정 정보를 정본 등록부에 기록한다.
-5. 워크플로우 버전과 Git 커밋 SHA를 매니페스트에 잠근다.
-6. 자동 연속 진행 여부, 캐릭터 이미지 품질 Medium, 시각화 장면 상한 25를 기록한다.
-7. 모든 단계 상태를 초기화한다.
-
-## 출력
-
-`project_manifest.json`, `stage_status.json`, `canon/canon_registry.json`, 빈 프로젝트 폴더 구조.
-
-## 게이트
-
-작품이 여러 회차 업로드가 아니라 한 편의 완결영화임이 명시되어야 한다. 21청크를 21화로 표기하면 실패다.
+현재 인수 상태와 로컬 작업 범위로 갱신. 구문서를 새 지침과 함께 적용하지 않는다. 이전 내용은 Git 이력에 보존되어 있다.

@@ -1,57 +1,61 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wuxia-studio.local/schemas/chunk_state.schema.json",
-  "title": "Script Chunk Boundary State",
+  "title": "V13 chunk checkpoint",
   "type": "object",
-  "required": ["chunk", "location", "lastActions", "characters", "relationships", "plot"],
+  "required": [
+    "schema_version",
+    "episode_id",
+    "chunk",
+    "of",
+    "subchunk",
+    "status",
+    "source_version",
+    "source_sentence_ids",
+    "last_scene_excerpt_file",
+    "characters",
+    "knowledge",
+    "relationships",
+    "open_threads",
+    "validation",
+    "output_sha256"
+  ],
   "properties": {
-    "chunk": {"type": "integer", "minimum": 1},
-    "location": {"type": "string"},
-    "time": {"type": "string"},
-    "lastActions": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"type": "string"}},
-    "nextRequiredEndState": {"type": "string"},
+    "schema_version": {
+      "const": "3.0"
+    },
+    "chunk": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "of": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "enum": [
+        "NOT_STARTED",
+        "IN_PROGRESS",
+        "NEEDS_REVIEW",
+        "ACCEPTED",
+        "INVALIDATED",
+        "FAILED"
+      ]
+    },
     "characters": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "object",
-        "required": ["alive", "injuries", "possessions", "knowledge", "unknown"],
-        "properties": {
-          "alive": {"type": "boolean"},
-          "bodyAge": {"type": ["integer", "null"]},
-          "mindAge": {"type": ["integer", "null"]},
-          "actualAge": {"type": ["integer", "null"]},
-          "appearance": {"type": "array", "items": {"type": "string"}},
-          "injuries": {"type": "array", "items": {"type": "string"}},
-          "fatigue": {"type": ["string", "null"]},
-          "possessions": {"type": "array", "items": {"type": "string"}},
-          "knowledge": {"type": "array", "items": {"type": "string"}},
-          "unknown": {"type": "array", "items": {"type": "string"}},
-          "abilitiesUsed": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}}
-        }
-      }
+      "type": "object"
+    },
+    "knowledge": {
+      "type": "object"
     },
     "relationships": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "object",
-        "required": ["stage", "evidence"],
-        "properties": {
-          "stage": {"type": "integer", "minimum": 0},
-          "label": {"type": "string"},
-          "evidence": {"type": "array", "items": {"type": "string"}}
-        }
-      }
+      "type": "object"
     },
-    "world": {"type": "object"},
-    "plot": {
-      "type": "object",
-      "required": ["completedEvents", "openThreads", "plantedPromises", "resolvedPromises"],
-      "properties": {
-        "completedEvents": {"type": "array", "items": {"type": "string"}},
-        "openThreads": {"type": "array", "items": {"type": "string"}},
-        "plantedPromises": {"type": "array", "items": {"type": "string"}},
-        "resolvedPromises": {"type": "array", "items": {"type": "string"}}
-      }
+    "source_sentence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
     }
   }
 }

@@ -1,35 +1,9 @@
-# 01. 권한·정본·사실 분리
+# V13 — workflow/01_AUTHORITY_AND_CANON.md
 
-## 우선순위
+현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
 
-1. 현재 작업에서 사용자가 직접 확정한 최신 지시
-2. 작품별 `project_manifest.json`과 `PROJECT_CONTEXT.md`
-3. 이 저장소의 `workflow/`, `stages/`, `contracts/`
-4. `reference/장편무협_대본지침_V12_FULL.md`
-5. 비공개 로컬 원문 스냅샷(공개 저장소 미포함)
-6. 승인된 직전 산출물
-7. 예시·구버전·다른 작품 자료
+[policy/00_OVERVIEW.md](../policy/00_OVERVIEW.md)
 
-상위 출처가 하위 출처를 덮는다. 사용자가 규칙을 수정하면 관련 실행 지침과 버전을 먼저 고치고 산출물을 재생성한다.
+[policy/02_STORY_MEMORY.md](../policy/02_STORY_MEMORY.md)
 
-## 범용 규칙과 작품 사실
-
-범용 규칙은 문체, 출력 형식, 단계 순서, 검수, 자동화다. 작품 사실은 세계관, 인물, 나이, 부상, 무기, 소품, 관계, 능력, 고정 대사, 결말이다.
-
-- 범용 규칙은 `workflow/`, `stages/`, `contracts/`에 둔다.
-- 작품 사실은 `projects/<project>/`에만 둔다.
-- 예시 작품의 이름이나 사건을 범용 파일에 하드코딩하지 않는다.
-
-## 정본 등록
-
-모든 입력 파일에 다음을 기록한다.
-
-- `source_type`: github, google_docs, local, library
-- `source_id` 또는 URL
-- `revision`
-- SHA-256 해시
-- 마지막 실제 읽기 시각
-- 적용 단계
-- 승인 상태
-
-요약문은 정본이 아니다. 원문을 읽지 못했으면 생성하지 않는다.
+최신 사용자 지시 우선, 구본문과 새 정본·추출 기억 구분. 구문서를 새 지침과 함께 적용하지 않는다. 이전 내용은 Git 이력에 보존되어 있다.

@@ -1,11 +1,23 @@
 {
-  "system": "wuxia-feature-film-production-workflow",
-  "version": "2.0.1",
-  "format": "single-feature-film",
+  "system": "wuxia-animation-production-workflow",
+  "version": "3.0.0",
+  "writer_policy": "V13",
+  "format": "episodic-animation",
+  "default_episode_count": 16,
+  "default_episode_target_minutes": 15,
   "default_script_chunks": 21,
-  "default_visual_chunks": 21,
-  "default_runtime_minutes": {"min": 120, "max": 180},
-  "default_script_chars_with_spaces": {"min": 63000, "max": 68000},
-  "character_image_quality": "Medium",
-  "updated": "2026-08-22"
+  "script_chunk_subdivision": true,
+  "character_design": "preserve-existing-webtoon",
+  "video_provider": "Google Flow",
+  "video_model": "Omni 1.1 Flash",
+  "updated": "2026-09-06",
+  "active_policy": [
+    "policy/00_OVERVIEW.md",
+    "policy/01_WRITING.md",
+    "policy/02_STORY_MEMORY.md",
+    "policy/03_REVIEW.md",
+    "policy/04_CONTINUOUS_ANIMATION.md",
+    "policy/05_FLOW_EXECUTION.md",
+    "policy/06_DELIVERY.md"
+  ]
 }

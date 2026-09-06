@@ -1,41 +1,26 @@
 #!/usr/bin/env python3
-"""Report the next executable stage or chunk from stage_status.json."""
-
-from __future__ import annotations
-
+"""Report the first incomplete V13 stage; does not execute it."""
 import argparse
 import json
 from pathlib import Path
 
-
-ORDER = [
-    "00_PROJECT_INIT", "01_SYNOPSIS_CONTEXT", "02_SCRIPT", "03_SCRIPT_AUDIT",
-    "04_CHARACTER_CLASSIFICATION", "05_CHARACTER_SHEETS", "06_CHARACTER_IMAGES",
-    "07_VISUAL_PREPROCESS", "08_VISUALIZATION", "09_VISUAL_AUDIT", "10_FLOW",
-    "11_VIDEO", "12_METADATA", "13_RELEASE",
-]
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("stage_status")
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("stage_status", type=Path)
     args = parser.parse_args()
-    data = json.loads(Path(args.stage_status).read_text(encoding="utf-8"))
-    stages = data["stages"]
-
-    for stage in ORDER:
-        state = stages[stage]
-        status = state["status"]
-        if status != "APPROVED":
-            if stage in {"02_SCRIPT", "08_VISUALIZATION"}:
-                print(f"{stage}: unit {state.get('next_unit', 1)}; status={status}")
-            else:
-                print(f"{stage}: status={status}")
+    data = json.loads(args.stage_status.read_text(encoding="utf-8"))
+    if data.get("schema_version") != "3.0":
+        raise SystemExit("Old stage status requires explicit migration to V13")
+    template = json.loads((Path(__file__).resolve().parents[1] / "templates/stage_status.template.json").read_text(encoding="utf-8"))
+    if set(data["stages"]) != set(template["stages"]):
+        raise SystemExit("Stage set does not match V13 template")
+    for name in template["stages"]:
+        item = data["stages"][name]
+        if item["status"] != "ACCEPTED":
+            print(json.dumps({"stage": name, "status": item["status"], "next_unit": item.get("next_unit")}, ensure_ascii=False))
             return 0
-
-    print("ALL_STAGES_APPROVED")
+    print("ALL_STAGES_ACCEPTED")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

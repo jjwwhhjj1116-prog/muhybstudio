@@ -1,11 +1,11 @@
-# 런북: 완성 대본에서 캐릭터시트·시각화로 이동
+# V13 — runbooks/02_EXISTING_SCRIPT_TO_VISUALS.md
 
-1. 대상 Google Docs와 로컬 대본이 동일한지 해시·말미·청크 수를 확인한다.
-2. 대본 전수 감사부터 실행한다. 잘못된 대본을 기준으로 캐릭터시트를 만들지 않는다.
-3. 주요·보조 인물을 분류한다.
-4. 주요 인물 텍스트 시트를 완성한다.
-5. 주요 인물별로 한글명이 적힌 Medium 품질 이미지를 실제 생성한다.
-6. 보조 인물은 영어 외형 앵커만 잠근다.
-7. 대본에 문장 ID를 부여하고 2~3문장 기준 장면 지도를 만든다.
-8. 시각화 1~21청크를 생성·Docs 누적·읽기 검증·체크포인트 저장한다.
-9. 모든 대사와 문장의 매핑률이 100%일 때만 Flow로 이동한다.
+현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
+
+[policy/04_CONTINUOUS_ANIMATION.md](../policy/04_CONTINUOUS_ANIMATION.md)
+
+[policy/05_FLOW_EXECUTION.md](../policy/05_FLOW_EXECUTION.md)
+
+[policy/06_DELIVERY.md](../policy/06_DELIVERY.md)
+
+실제 음성과 키프레임·영상 생성까지 연결. 구문서를 새 지침과 함께 적용하지 않는다. 이전 내용은 Git 이력에 보존되어 있다.
