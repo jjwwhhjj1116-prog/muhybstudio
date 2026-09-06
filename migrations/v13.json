@@ -16,10 +16,9 @@
   {
     "previous": "contracts/01_SCRIPT_OUTPUT_CONTRACT.md",
     "current": [
-      "policy/01_WRITING.md",
-      "policy/06_DELIVERY.md"
+      "policy/01_WRITING.md"
     ],
-    "change": "고정 직접 대사·구조 태그 폐기, 음성 형식은 파생 단계로 이동"
+    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
   },
   {
     "previous": "contracts/02_SCENE_MAPPING_CONTRACT.md",
@@ -53,11 +52,9 @@
   {
     "previous": "reference/장편무협_대본지침_V12_FULL.md",
     "current": [
-      "policy/01_WRITING.md",
-      "policy/02_STORY_MEMORY.md",
-      "policy/03_REVIEW.md"
+      "policy/01_WRITING.md"
     ],
-    "change": "문체 수치·대사 삭제 심사·상시 예문 폐기, 작가·기억·검수 분리"
+    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
   },
   {
     "previous": "runbooks/01_NEW_FILM_START.md",
@@ -94,26 +91,23 @@
   {
     "previous": "stages/02_SCRIPT_PREFLIGHT.md",
     "current": [
-      "policy/01_WRITING.md",
-      "policy/02_STORY_MEMORY.md"
+      "policy/01_WRITING.md"
     ],
-    "change": "V12 전량 재독·고정 문체 위치 잠금 폐기"
+    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
   },
   {
     "previous": "stages/03_SCRIPT_CHUNK.md",
     "current": [
-      "policy/01_WRITING.md",
-      "policy/02_STORY_MEMORY.md",
-      "policy/03_REVIEW.md"
+      "policy/01_WRITING.md"
     ],
-    "change": "짧은 작가 지침·현재 상태·직전 장면만 입력"
+    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
   },
   {
     "previous": "stages/04_SCRIPT_FULL_AUDIT.md",
     "current": [
-      "policy/03_REVIEW.md"
+      "policy/01_WRITING.md"
     ],
-    "change": "빈도 검사 중심에서 원문 근거 있는 인과·발화 검수로 교체"
+    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
   },
   {
     "previous": "stages/05_CHARACTER_CLASSIFICATION.md",

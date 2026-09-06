@@ -2,6 +2,7 @@
 """Validate public workflow documents and templates; not fiction or media quality."""
 from __future__ import annotations
 
+import hashlib
 import json
 import py_compile
 import re
@@ -63,10 +64,16 @@ def main() -> int:
         paths = files()
         version = json.loads((ROOT / "VERSION.json").read_text(encoding="utf-8"))
         mapping = json.loads((ROOT / "migrations/v13.json").read_text(encoding="utf-8"))
-        if version.get("version") != "3.0.0" or version.get("writer_policy") != "V13" or version.get("format") != "episodic-animation":
+        if version.get("version") != "3.0.0" or version.get("writer_policy") != "V12_RESTORED" or version.get("format") != "episodic-animation":
             errors.append("wrong workflow version/format")
         if len(mapping) != 37 or len({x['previous'] for x in mapping}) != 37:
             errors.append("migration must cover 37 distinct old entries")
+        for restored in version.get("writer_restored_files", []):
+            path = ROOT / restored["path"]
+            if not path.is_file() or hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest() != restored["sha256"]:
+                errors.append("restored writer source changed: " + restored["path"])
+        if len(version.get("writer_restored_files", [])) != 5:
+            errors.append("five original writer documents must be pinned")
         required = version["active_policy"] + ["AGENTS.md", "workflow/12_THREE_PC_SYNC.md", "coordination/STATUS.md"]
         required += [d for row in mapping for d in [row['previous'], *row['current']]]
         for rel in required:

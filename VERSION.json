@@ -1,7 +1,7 @@
 {
   "system": "wuxia-animation-production-workflow",
   "version": "3.0.0",
-  "writer_policy": "V13",
+  "writer_policy": "V12_RESTORED",
   "format": "episodic-animation",
   "default_episode_count": 16,
   "default_episode_target_minutes": 15,
@@ -10,7 +10,7 @@
   "character_design": "preserve-existing-webtoon",
   "video_provider": "Google Flow",
   "video_model": "Omni 1.1 Flash",
-  "updated": "2026-09-06",
+  "updated": "2026-09-07",
   "active_policy": [
     "policy/00_OVERVIEW.md",
     "policy/01_WRITING.md",
@@ -19,5 +19,28 @@
     "policy/04_CONTINUOUS_ANIMATION.md",
     "policy/05_FLOW_EXECUTION.md",
     "policy/06_DELIVERY.md"
+  ],
+  "writer_source_commit": "1c334fbb345643b94cd10d355cfb0b47c0e37171",
+  "writer_restored_files": [
+    {
+      "path": "reference/장편무협_대본지침_V12_FULL.md",
+      "sha256": "28126a5a738031c0ddb9f3a6d44bedf04c80450400ba692efb26ad1b85277643"
+    },
+    {
+      "path": "contracts/01_SCRIPT_OUTPUT_CONTRACT.md",
+      "sha256": "caaa23a59cd66b208f6d42b920a482f0d328d8b2abb7c344811731a9d31ca50e"
+    },
+    {
+      "path": "stages/02_SCRIPT_PREFLIGHT.md",
+      "sha256": "af5289a0515b8b53e3d975b404703afb029b44ef2ee28d4aec4753076bff04bc"
+    },
+    {
+      "path": "stages/03_SCRIPT_CHUNK.md",
+      "sha256": "a3570aabf7879c4a8b390038a95ed26493d33e9ef82813c0d2a3626482ba0cc0"
+    },
+    {
+      "path": "stages/04_SCRIPT_FULL_AUDIT.md",
+      "sha256": "a35aadd55b7d8567d3ab20c46fec5c113451ae11b9b4c6b5553155c9402b359e"
+    }
   ]
 }
