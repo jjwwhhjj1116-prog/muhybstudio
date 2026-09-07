@@ -18,7 +18,7 @@
     "current": [
       "policy/01_WRITING.md"
     ],
-    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
+    "change": "2026-09-07 후속 사용자 지시: 현행 집필·출력·검수 개정, 최초 원문은 해시 고정 기록 보존"
   },
   {
     "previous": "contracts/02_SCENE_MAPPING_CONTRACT.md",
@@ -54,7 +54,7 @@
     "current": [
       "policy/01_WRITING.md"
     ],
-    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
+    "change": "2026-09-07 후속 사용자 지시: 현행 집필·출력·검수 개정, 최초 원문은 해시 고정 기록 보존"
   },
   {
     "previous": "runbooks/01_NEW_FILM_START.md",
@@ -93,21 +93,21 @@
     "current": [
       "policy/01_WRITING.md"
     ],
-    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
+    "change": "2026-09-07 후속 사용자 지시: 현행 집필·출력·검수 개정, 최초 원문은 해시 고정 기록 보존"
   },
   {
     "previous": "stages/03_SCRIPT_CHUNK.md",
     "current": [
       "policy/01_WRITING.md"
     ],
-    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
+    "change": "2026-09-07 후속 사용자 지시: 현행 집필·출력·검수 개정, 최초 원문은 해시 고정 기록 보존"
   },
   {
     "previous": "stages/04_SCRIPT_FULL_AUDIT.md",
     "current": [
       "policy/01_WRITING.md"
     ],
-    "change": "2026-09-07 사용자 지시로 최초 원문 복원; V13의 폐기/대체 기록은 철회"
+    "change": "2026-09-07 후속 사용자 지시: 현행 집필·출력·검수 개정, 최초 원문은 해시 고정 기록 보존"
   },
   {
     "previous": "stages/05_CHARACTER_CLASSIFICATION.md",

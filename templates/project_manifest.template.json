@@ -35,5 +35,12 @@
   "private_sync": {
     "configured": false,
     "remote": null
+  },
+  "style_reference": {
+    "guide_path": null,
+    "excerpt_path": null,
+    "sha256": null,
+    "role": "style_reference_only_not_story_canon",
+    "public_copy_allowed": false
   }
 }

@@ -1,7 +1,7 @@
 {
   "system": "wuxia-animation-production-workflow",
   "version": "3.0.0",
-  "writer_policy": "V12_RESTORED",
+  "writer_policy": "NARRATIVE_POINT_HOOKS_2026_09",
   "format": "episodic-animation",
   "default_episode_count": 16,
   "default_episode_target_minutes": 15,
@@ -27,20 +27,22 @@
       "sha256": "28126a5a738031c0ddb9f3a6d44bedf04c80450400ba692efb26ad1b85277643"
     },
     {
-      "path": "contracts/01_SCRIPT_OUTPUT_CONTRACT.md",
+      "path": "reference/v12-original/01_SCRIPT_OUTPUT_CONTRACT.md",
       "sha256": "caaa23a59cd66b208f6d42b920a482f0d328d8b2abb7c344811731a9d31ca50e"
     },
     {
-      "path": "stages/02_SCRIPT_PREFLIGHT.md",
+      "path": "reference/v12-original/02_SCRIPT_PREFLIGHT.md",
       "sha256": "af5289a0515b8b53e3d975b404703afb029b44ef2ee28d4aec4753076bff04bc"
     },
     {
-      "path": "stages/03_SCRIPT_CHUNK.md",
+      "path": "reference/v12-original/03_SCRIPT_CHUNK.md",
       "sha256": "a3570aabf7879c4a8b390038a95ed26493d33e9ef82813c0d2a3626482ba0cc0"
     },
     {
-      "path": "stages/04_SCRIPT_FULL_AUDIT.md",
+      "path": "reference/v12-original/04_SCRIPT_FULL_AUDIT.md",
       "sha256": "a35aadd55b7d8567d3ab20c46fec5c113451ae11b9b4c6b5553155c9402b359e"
     }
-  ]
+  ],
+  "writer_archive_note": "writer_restored_files pins historical originals, not active writing instructions",
+  "writer_entrypoint": "policy/01_WRITING.md"
 }
