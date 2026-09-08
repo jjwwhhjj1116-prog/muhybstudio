@@ -1,7 +1,29 @@
-# V13 — stages/09_VISUAL_CHUNK.md
+# 분할된 장면에 맞는 시각화 프롬프트
 
-현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
+[장면 분할](08_VISUAL_PREPROCESS.md)의 저장본을 입력으로 삼는다. [연속 영상 정책](../policy/04_CONTINUOUS_ANIMATION.md)을 함께 적용한다.
 
-[policy/04_CONTINUOUS_ANIMATION.md](../policy/04_CONTINUOUS_ANIMATION.md)
+## 전달 형식
 
-공통 장식 머리말·25샷 상한 폐기, 실제 키프레임 설계. 구문서를 새 지침과 함께 적용하지 않는다. 이전 내용은 Git 이력에 보존되어 있다.
+```text
+[장면 N]
+[한국어 번역] 해당 장면의 대본 원문 — 나레이션과 감정 태그·큰따옴표 대사 모두 보존
+[영어 이미지 프롬프트] 그 장면의 한 순간을 그리는 완결된 영어 프롬프트
+```
+
+CTA는 Hook 마지막 장면 뒤, END는 End 첫 장면 앞에 각각 원본 표식을 유지한다. 표식에 장면 번호를 부여하지 않는다. 분석·시작종료 프레임·동작 초안은 별도 파일에 둔다.
+
+## 화풍과 장면 내용
+
+한국 다크판타지 무협 액션 웹툰의 원래 화풍을 유지한다. 공통 화풍 문구는 다음 요소를 생략하거나 일반 웹툰으로 임의 약화하지 않는다.
+
+`Korean dark-fantasy martial-arts action manhwa webtoon style, hand-drawn illustration, ink line art with digital coloring, NOT photorealistic, NOT 3D render, NOT photograph, Masterpiece, ultra-detailed, premium anime key-visual quality, cel-shaded digital painting with ink brush texture, rich ink-wash rendering with dramatic lighting.`
+
+불꽃·입자·바람은 실제 장면에 필요한 경우에 추가한다. 인물의 표정과 행동은 분할 원문의 사건·감정에 근거해야 한다. 의상·무기·쥔 손·부상·젖음·구속·소품 소유권은 각 순간에 맞게 명시한다. 칼을 집어넣었다고 손이 항상 비어 있다고 가정하지 않는다. 구조·부축·열쇠 조작 등 그 손이 실제로 하는 행동과 대조한다.
+
+승인된 인물의 이름·디자인을 유지한다. 실제 단일 이미지 참조의 등록 여부는 별도 기록하며, 이름만 넣고 등록 완료라고 표시하지 않는다. 상세 시트의 이름·칸·종이 배경을 장면에 옮기지 않는다. 화면 가장자리까지 이어지는 단일 중국 강호 배경으로 작성한다.
+
+## 시작·종료와 검수
+
+장면마다 시작·종료 키프레임을 설계하고, 연속 샷은 동일 종료/시작 ID 및 실제 자산을 공유한다. 구도·시간 전환은 CUT으로 기록한다. 그림 한 장에 시간상 전후 행동을 겹쳐 넣지 않는다.
+
+청크별 검수 후 다음 청크를 이어간다. 전체 원문 대조·화풍·연속성 검수를 마친 영어 문구만 Python으로 추출한다. 영상 프롬프트는 실제 시작·종료 이미지와 TTS 대조 전까지 초안이다.
