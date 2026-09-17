@@ -28,9 +28,13 @@ policy/01_WRITING.md와 contracts/01_SCRIPT_OUTPUT_CONTRACT.md를 따른다. 일
 
 이 단계는 내부 06_SHOT_PLAN의 텍스트 준비다. 음성 정렬과 실제 프레임 검사 전에는 타이밍·시각 QA 완료가 아니다.
 
+## 납품 장면 수와 번호
+
+시각화 N장면 = Flow 이미지 N개 = Flow 영상 N개, 모두 1~N으로 일치시킨다. 시각화 밖에 후속 컷을 추가해 수량이 달라지게 하지 않는다. 추가 분할이 필요하면 대본 원문을 새 시각화 장면에 나눠 배정한 뒤 이미지·영상 파일도 함께 갱신한다. 원문 구간 누락·중복 없음과 세 파일의 수량·순서·장면 내용 대응을 확인한다. 내부 식별자와 재시도 이력은 보존하지만 별도 납품 장면으로 세지 않는다.
+
 ## 4. 정확한 추출과 실제 프레임 반영
 
-현행 도구는 automation/export_scene_prompts.py다. 장면 분석과 영어 집필은 검토된 입력 bundle에서 끝내고 Python은 확정 필드를 그대로 추출한다. 레거시 변환기는 사용하지 않는다.
+현행 도구는 automation/export_scene_prompts.py다. 장면 분석과 영어 집필은 검토된 입력 bundle에서 끝내고 Python은 확정 필드를 그대로 추출한다. 레거시 변환기는 사용하지 않는다. 아래 도구의 고유 키프레임 출력은 내부 자료이며, 그것만으로 납품 1:1 계약을 충족했다고 판단하지 않는다. 사용자용 이미지·영상 목록은 시각화 번호 기준으로 별도 대조·검수한다.
 
     python automation/export_scene_prompts.py PRIVATE_BUNDLE.json PRIVATE_SCRIPT.md PRIVATE_OUTPUT
 
