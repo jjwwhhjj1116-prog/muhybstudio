@@ -9,8 +9,8 @@
   "script_chunk_subdivision": true,
   "character_design": "preserve-existing-webtoon",
   "video_provider": "Google Flow",
-  "video_model": "Omni 1.1 Flash",
-  "updated": "2026-09-07",
+  "video_model": "Veo 3.1 - Lite",
+  "updated": "2026-10-06",
   "active_policy": [
     "policy/00_OVERVIEW.md",
     "policy/01_WRITING.md",
