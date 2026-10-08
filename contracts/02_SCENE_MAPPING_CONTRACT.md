@@ -1,6 +1,6 @@
 # V13 — contracts/02_SCENE_MAPPING_CONTRACT.md
 
-현재 적용: V13 / workflow 3.0.0. 이 경로의 기존 지침은 아래 문서로 대체되었다.
+현재 적용: V13 계열 / 현행 버전은 VERSION.json을 따른다. 이 경로의 기존 지침은 아래 문서로 대체되었다.
 
 [policy/04_CONTINUOUS_ANIMATION.md](../policy/04_CONTINUOUS_ANIMATION.md)
 

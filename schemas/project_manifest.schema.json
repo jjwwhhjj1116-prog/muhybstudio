@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "V13 project manifest",
+  "title": "Project manifest, schema 3.0 with workflow 3.0.0 and 3.1.0 compatibility",
   "type": "object",
   "required": [
     "schema_version",
@@ -32,7 +32,10 @@
       "const": "episodic-animation"
     },
     "workflow_version": {
-      "const": "3.0.0"
+      "enum": [
+        "3.0.0",
+        "3.1.0"
+      ]
     },
     "workflow_git_sha": {
       "type": [
@@ -65,13 +68,63 @@
           "minimum": 0
         },
         "script_chunks": {
-          "type": "integer",
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 1
         },
         "allow_subchunks": {
           "type": "boolean"
+        },
+        "episode_min_runtime_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "story_part_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "story_parts_per_episode": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "script_plan_status": {
+          "enum": [
+            "NOT_STARTED",
+            "PLANNED",
+            "IN_PROGRESS",
+            "NEEDS_REVIEW",
+            "ACCEPTED",
+            "INVALIDATED",
+            "FAILED"
+          ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "script_chunks"
+            ],
+            "properties": {
+              "script_chunks": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "script_plan_status"
+            ],
+            "properties": {
+              "script_plan_status": {
+                "const": "NOT_STARTED"
+              }
+            }
+          }
+        }
+      ]
     },
     "execution": {
       "type": "object"
@@ -88,5 +141,31 @@
     "private_sync": {
       "type": "object"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "workflow_version"
+        ],
+        "properties": {
+          "workflow_version": {
+            "const": "3.1.0"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "targets": {
+            "required": [
+              "episode_min_runtime_seconds",
+              "story_part_count",
+              "story_parts_per_episode",
+              "script_plan_status"
+            ]
+          }
+        }
+      }
+    }
+  ]
 }

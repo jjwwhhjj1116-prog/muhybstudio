@@ -2,7 +2,7 @@
   "schema_version": "3.0",
   "episode_id": null,
   "chunk": 1,
-  "of": 21,
+  "of": null,
   "subchunk": null,
   "status": "NOT_STARTED",
   "source_version": null,

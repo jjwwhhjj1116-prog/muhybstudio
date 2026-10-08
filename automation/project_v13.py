@@ -7,6 +7,7 @@ import json
 import re
 import subprocess
 from pathlib import Path
+from validate_v13 import validate_defaults
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -29,18 +30,26 @@ def create_project(project_root: Path, slug: str, title: str) -> Path:
     manifest = json.loads((ROOT / "templates/project_manifest.template.json").read_text(encoding="utf-8"))
     status = json.loads((ROOT / "templates/stage_status.template.json").read_text(encoding="utf-8"))
     checkpoint = json.loads((ROOT / "templates/memory_checkpoint.template.json").read_text(encoding="utf-8"))
+    release_plan = json.loads((ROOT / "templates/release_plan.template.json").read_text(encoding="utf-8"))
+    chunk_template = json.loads((ROOT / "templates/script_chunk_state.template.json").read_text(encoding="utf-8"))
+    version = json.loads((ROOT / "VERSION.json").read_text(encoding="utf-8"))
+    errors = validate_defaults(version, manifest, release_plan, status, chunk_template)
+    if errors:
+        raise ValueError("invalid initializer templates: " + "; ".join(errors))
     revision = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True)
     dirty = subprocess.run(["git", "-C", str(ROOT), "status", "--porcelain"], capture_output=True, text=True)
     # A dirty checkout has no commit that reproduces all templates.
     manifest.update(project_id=slug, title=title.strip(),
                     workflow_git_sha=revision.stdout.strip() if revision.returncode == 0 and dirty.returncode == 0 and not dirty.stdout.strip() else None)
     status["project_id"] = checkpoint["project_id"] = slug
+    release_plan["project_id"] = slug
     target.mkdir(parents=True, exist_ok=False)
     for folder in ["canon", "synopsis", "script/chunks", "script/state", "memory", "characters",
                    "shots", "keyframes", "jobs", "voice", "edit", "metadata", "reports", "exports"]:
         (target / folder).mkdir(parents=True, exist_ok=True)
     save(target / "project_manifest.json", manifest)
     save(target / "stage_status.json", status)
+    save(target / "synopsis/release_plan.json", release_plan)
     save(target / "memory/checkpoint.json", checkpoint)
     for name in ["canon", "state", "knowledge", "relationships", "threads", "issues"]:
         save(target / f"memory/{name}.json", {"schema_version": "3.0", "project_id": slug, "items": []})

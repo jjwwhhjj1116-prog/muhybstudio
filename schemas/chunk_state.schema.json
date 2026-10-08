@@ -28,7 +28,10 @@
       "minimum": 1
     },
     "of": {
-      "type": "integer",
+      "type": [
+        "integer",
+        "null"
+      ],
       "minimum": 1
     },
     "status": {
@@ -57,5 +60,26 @@
       },
       "uniqueItems": true
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "of"
+        ],
+        "properties": {
+          "of": {
+            "type": "null"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "NOT_STARTED"
+          }
+        }
+      }
+    }
+  ]
 }

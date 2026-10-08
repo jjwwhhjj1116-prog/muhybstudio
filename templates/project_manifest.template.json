@@ -3,14 +3,18 @@
   "project_id": "replace-me",
   "title": "작품명",
   "format": "episodic-animation",
-  "workflow_version": "3.0.0",
+  "workflow_version": "3.1.0",
   "workflow_git_sha": null,
   "targets": {
-    "episode_count": 16,
-    "episode_target_minutes": 15,
+    "episode_count": 4,
+    "episode_target_minutes": 60,
     "runtime_tolerance_seconds": null,
-    "script_chunks": 21,
-    "allow_subchunks": true
+    "script_chunks": null,
+    "allow_subchunks": true,
+    "episode_min_runtime_seconds": 3600,
+    "story_part_count": 16,
+    "story_parts_per_episode": 4,
+    "script_plan_status": "NOT_STARTED"
   },
   "execution": {
     "auto_continue_chunks": true,
@@ -25,7 +29,7 @@
   },
   "video": {
     "provider": "Google Flow",
-    "model": "Omni 1.1 Flash",
+    "model": "Veo 3.1 - Lite",
     "capabilities_verified_at": null
   },
   "google_docs": {
