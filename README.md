@@ -12,6 +12,7 @@
 - [창작 네 단계별 지침](creative-guides/README.md) · [3.2 개정 범위와 개선 10안 대응](references/CREATIVE_POLICY_CHANGE_3_2.md)
 - [현행 집필 지침](policy/01_WRITING.md) · [작품 기억](policy/02_STORY_MEMORY.md) · [인과·발화 검수](policy/03_REVIEW.md)
 - [연속 영상 설계](policy/04_CONTINUOUS_ANIMATION.md) · [Flow 실행 계약](policy/05_FLOW_EXECUTION.md) · [음성·편집·납품](policy/06_DELIVERY.md)
+- [웹툰판 Remotion 제작안](references/WEBTOON_REMOTION_PRODUCTION_PLAN_2026_10.md) — 내장 이미지·말풍선·성우·모션의 검토안이며 렌더 구현 완료가 아니다.
 
 ## 변경 원칙
 
