@@ -58,6 +58,8 @@ def validate_shape(value: object, schema: dict, at: str = "root") -> list[str]:
             errors.append(f"{at}: below minimum")
         if "exclusiveMinimum" in schema and value <= schema["exclusiveMinimum"]:
             errors.append(f"{at}: below exclusive minimum")
+        if "maximum" in schema and value > schema["maximum"]:
+            errors.append(f"{at}: above maximum")
     if isinstance(value, (str, list)):
         length_key = "minLength" if isinstance(value, str) else "minItems"
         if len(value) < schema.get(length_key, 0):
@@ -85,11 +87,14 @@ def validate_manifest(manifest: object, stage_status: object = None) -> list[str
             script_stage = stage_status["stages"].get("02_SCRIPT")
         if not isinstance(script_stage, dict) or script_stage.get("status") != "NOT_STARTED":
             errors.append("manifest.targets.script_chunks: null is allowed only while the script stage is NOT_STARTED")
-    if manifest["workflow_version"] == "3.1.0":
+    if manifest["workflow_version"] in {"3.1.0", "3.2.0"}:
         if targets["episode_count"] * targets["story_parts_per_episode"] != targets["story_part_count"]:
             errors.append("manifest.targets: public episode count and internal story part allocation disagree")
         if targets["episode_target_minutes"] * 60 < targets["episode_min_runtime_seconds"]:
             errors.append("manifest.targets: planned episode target is shorter than the minimum runtime")
+    if manifest["workflow_version"] == "3.2.0":
+        if not math.isclose(targets["story_part_target_minutes"] * targets["story_parts_per_episode"], targets["episode_target_minutes"], rel_tol=1e-9, abs_tol=1e-9):
+            errors.append("manifest.targets: internal part durations do not match the public episode target")
     return errors
 
 
@@ -106,6 +111,9 @@ def validate_release_plan(plan: object, manifest: object = None) -> list[str]:
         errors.append("release_plan: missing or extra public episodes")
     if plan["episode_target_minutes"] * 60 < plan["episode_min_runtime_seconds"]:
         errors.append("release_plan: target runtime is shorter than the planned minimum")
+    if plan["workflow_version"] == "3.2.0":
+        if not math.isclose(plan["story_part_target_minutes"] * per_episode, plan["episode_target_minutes"], rel_tol=1e-9, abs_tol=1e-9):
+            errors.append("release_plan: internal part durations do not match the public episode target")
     owned = []
     for index, episode in enumerate(plan["episodes"], 1):
         if episode["episode_number"] != index or episode["episode_id"] != f"EP{index:02d}":
@@ -117,6 +125,23 @@ def validate_release_plan(plan: object, manifest: object = None) -> list[str]:
         minimum = episode["planned_min_runtime_seconds"]
         if minimum != plan["episode_min_runtime_seconds"]:
             errors.append(f"release_plan.episodes[{index - 1}]: planned minimum differs from the project minimum")
+        if plan["workflow_version"] == "3.2.0":
+            counts = [episode[key] for key in ("visual_scene_count", "image_prompt_count", "video_prompt_count")]
+            if plan["production_version"] == "WEBTOON_EXPERIMENT":
+                counts = [episode[key] for key in ("visual_scene_count", "image_prompt_count", "motion_scene_count")]
+            known = [value for value in counts if value is not None]
+            if any(value > plan["episode_scene_limit"] for value in known):
+                errors.append(f"release_plan.episodes[{index - 1}]: declared prompt count exceeds the episode scene limit")
+            if len(set(known)) > 1:
+                errors.append(f"release_plan.episodes[{index - 1}]: declared production counts must agree for the selected version")
+            if plan["production_version"] == "WEBTOON_EXPERIMENT":
+                selected = episode["video_prompt_count"]
+                if selected is not None and selected > plan["episode_scene_limit"]:
+                    errors.append(f"release_plan.episodes[{index - 1}]: selected Flow count exceeds the scene limit")
+                if selected is not None and any(selected > value for value in known):
+                    errors.append(f"release_plan.episodes[{index - 1}]: selected Flow count exceeds a known scene count")
+            elif episode["video_prompt_count"] == 0:
+                errors.append(f"release_plan.episodes[{index - 1}]: NOVEL requires one video prompt per scene")
         runtime = episode["runtime_seconds"]
         if runtime is not None and runtime < minimum:
             errors.append(f"release_plan.episodes[{index - 1}]: stated runtime is below the planned minimum")
@@ -143,8 +168,12 @@ def validate_release_plan(plan: object, manifest: object = None) -> list[str]:
                 "episode_target_minutes": "episode_target_minutes",
                 "episode_min_runtime_seconds": "episode_min_runtime_seconds",
             }
+            if plan["workflow_version"] == "3.2.0":
+                pairs.update(story_part_target_minutes="story_part_target_minutes", episode_scene_limit="episode_scene_limit")
             if plan["project_id"] != manifest["project_id"] or plan["workflow_version"] != manifest["workflow_version"]:
                 errors.append("release_plan: project/workflow does not match the manifest; explicit planning is required")
+            if plan["workflow_version"] == "3.2.0" and plan["production_version"] != manifest.get("production_version"):
+                errors.append("release_plan: production version differs from the manifest")
             for plan_key, target_key in pairs.items():
                 if plan[plan_key] != manifest["targets"].get(target_key):
                     errors.append(f"release_plan.{plan_key}: differs from manifest.targets.{target_key}")
@@ -156,24 +185,30 @@ def validate_defaults(version: dict, manifest: dict, plan: dict, status: dict, c
     errors = validate_manifest(manifest, status) + validate_release_plan(plan, manifest)
     expected = {
         "default_episode_count": ("episode_count", 4),
-        "default_episode_target_minutes": ("episode_target_minutes", 60),
-        "default_episode_min_runtime_seconds": ("episode_min_runtime_seconds", 3600),
+        "default_episode_target_minutes": ("episode_target_minutes", 80),
+        "default_episode_min_runtime_seconds": ("episode_min_runtime_seconds", 4800),
         "default_story_part_count": ("story_part_count", 16),
         "default_story_parts_per_episode": ("story_parts_per_episode", 4),
+        "default_story_part_target_minutes": ("story_part_target_minutes", 20),
+        "default_episode_scene_limit": ("episode_scene_limit", 200),
         "default_script_chunks": ("script_chunks", None),
         "script_chunk_subdivision": ("allow_subchunks", True),
     }
     for version_key, (target_key, wanted) in expected.items():
-        if version_key not in version or version[version_key] != wanted or manifest["targets"].get(target_key) != wanted:
+        if version_key not in version or type(version[version_key]) is not type(wanted) or version[version_key] != wanted or manifest["targets"].get(target_key) != wanted:
             errors.append(f"new-project default mismatch: {version_key}/targets.{target_key}")
     if manifest.get("workflow_version") != version.get("version") or status.get("workflow_version") != version.get("version"):
         errors.append("initializer template workflow versions differ from VERSION.json")
+    if version.get("default_production_version") != "NOVEL" or manifest.get("production_version") != "NOVEL" or plan.get("production_version") != "NOVEL":
+        errors.append("new project default must preserve NOVEL; webtoon experiment requires an explicit version")
     if manifest.get("video", {}).get("model") != version.get("video_model") or version.get("video_model") != "Veo 3.1 - Lite":
         errors.append("initializer/default video model mismatch")
     if manifest["targets"].get("script_plan_status") != "NOT_STARTED" or chunk.get("status") != "NOT_STARTED" or chunk.get("of") is not None:
         errors.append("new project must not invent a technical chunk count before planning")
     if plan.get("status") != "NOT_STARTED" or any(episode.get("runtime_seconds") is not None for episode in plan.get("episodes", [])):
         errors.append("new release plan cannot assert an actual measured runtime")
+    if any(episode.get(key) is not None for episode in plan.get("episodes", []) for key in ("visual_scene_count", "image_prompt_count", "video_prompt_count", "motion_scene_count")):
+        errors.append("new release plan cannot invent scene or prompt counts before scene analysis")
     return errors
 
 
@@ -183,7 +218,7 @@ def main() -> int:
         paths = files()
         version = json.loads((ROOT / "VERSION.json").read_text(encoding="utf-8"))
         mapping = json.loads((ROOT / "migrations/v13.json").read_text(encoding="utf-8"))
-        if version.get("version") != "3.1.0" or version.get("writer_policy") != "NARRATIVE_POINT_HOOKS_2026_09" or version.get("format") != "episodic-animation":
+        if version.get("version") != "3.2.0" or version.get("writer_policy") != "NARRATIVE_POINT_HOOKS_2026_09" or version.get("format") != "episodic-animation":
             errors.append("wrong workflow version/format")
         if len(mapping) != 37 or len({x['previous'] for x in mapping}) != 37:
             errors.append("migration must cover 37 distinct old entries")

@@ -20,7 +20,10 @@
       "const": "3.0"
     },
     "workflow_version": {
-      "const": "3.1.0"
+      "enum": [
+        "3.1.0",
+        "3.2.0"
+      ]
     },
     "project_id": {
       "type": "string",
@@ -110,9 +113,93 @@
             ],
             "minLength": 1,
             "description": "Source for an externally measured runtime: private project-relative report or media path. The structural validator does not read or measure it."
+          },
+          "visual_scene_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 200,
+            "description": "Externally declared count; this validator does not parse or review the actual prompt files."
+          },
+          "image_prompt_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 200,
+            "description": "Externally declared count; this validator does not parse or review the actual prompt files."
+          },
+          "video_prompt_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 200,
+            "description": "Externally declared count, not verification of actual scene/asset content."
+          },
+          "motion_scene_count": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 200,
+            "description": "Externally declared count, not verification of actual scene/asset content."
+          }
+        }
+      }
+    },
+    "story_part_target_minutes": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "episode_scene_limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 200
+    },
+    "production_version": {
+      "enum": [
+        "NOVEL",
+        "WEBTOON_EXPERIMENT"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "workflow_version"
+        ],
+        "properties": {
+          "workflow_version": {
+            "const": "3.2.0"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "story_part_target_minutes",
+          "episode_scene_limit",
+          "production_version"
+        ],
+        "properties": {
+          "episodes": {
+            "items": {
+              "required": [
+                "visual_scene_count",
+                "image_prompt_count",
+                "video_prompt_count",
+                "motion_scene_count"
+              ]
+            }
           }
         }
       }
     }
-  }
+  ]
 }

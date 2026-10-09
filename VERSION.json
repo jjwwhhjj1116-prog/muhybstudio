@@ -1,11 +1,11 @@
 {
   "system": "wuxia-animation-production-workflow",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "writer_policy": "NARRATIVE_POINT_HOOKS_2026_09",
   "format": "episodic-animation",
   "default_episode_count": 4,
-  "default_episode_target_minutes": 60,
-  "default_episode_min_runtime_seconds": 3600,
+  "default_episode_target_minutes": 80,
+  "default_episode_min_runtime_seconds": 4800,
   "default_story_part_count": 16,
   "default_story_parts_per_episode": 4,
   "default_script_chunks": null,
@@ -13,7 +13,7 @@
   "character_design": "preserve-existing-webtoon",
   "video_provider": "Google Flow",
   "video_model": "Veo 3.1 - Lite",
-  "updated": "2026-10-08",
+  "updated": "2026-10-09",
   "active_policy": [
     "policy/00_OVERVIEW.md",
     "policy/01_WRITING.md",
@@ -22,7 +22,8 @@
     "policy/04_CONTINUOUS_ANIMATION.md",
     "policy/05_FLOW_EXECUTION.md",
     "policy/06_DELIVERY.md",
-    "policy/07_SYNOPSIS_AND_RELEASE_PLAN.md"
+    "policy/07_SYNOPSIS_AND_RELEASE_PLAN.md",
+    "policy/08_TWO_VERSION_PRODUCTION.md"
   ],
   "writer_source_commit": "1c334fbb345643b94cd10d355cfb0b47c0e37171",
   "writer_restored_files": [
@@ -48,5 +49,12 @@
     }
   ],
   "writer_archive_note": "writer_restored_files pins historical originals, not active writing instructions",
-  "writer_entrypoint": "policy/01_WRITING.md"
+  "writer_entrypoint": "policy/01_WRITING.md",
+  "default_story_part_target_minutes": 20,
+  "default_episode_scene_limit": 200,
+  "default_production_version": "NOVEL",
+  "production_versions": [
+    "NOVEL",
+    "WEBTOON_EXPERIMENT"
+  ]
 }

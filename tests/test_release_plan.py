@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "automation"))
 from project_v13 import create_project
-from validate_v13 import validate_manifest, validate_release_plan, validate_shape
+from validate_v13 import validate_defaults, validate_manifest, validate_release_plan, validate_shape
 
 
 def read_json(path):
@@ -20,13 +20,15 @@ def read_json(path):
 
 def current_manifest():
     manifest = read_json(ROOT / "templates/project_manifest.template.json")
-    manifest.update(project_id="planning-test", workflow_version="3.1.0")
+    manifest.update(project_id="planning-test", workflow_version="3.2.0", production_version="NOVEL")
     manifest["targets"].update(
         episode_count=4,
-        episode_target_minutes=60,
-        episode_min_runtime_seconds=3600,
+        episode_target_minutes=80,
+        episode_min_runtime_seconds=4800,
         story_part_count=16,
         story_parts_per_episode=4,
+        story_part_target_minutes=20,
+        episode_scene_limit=200,
         script_plan_status="NOT_STARTED",
         script_chunks=None,
         allow_subchunks=True,
@@ -37,22 +39,29 @@ def current_manifest():
 def current_plan():
     return {
         "schema_version": "3.0",
-        "workflow_version": "3.1.0",
+        "workflow_version": "3.2.0",
+        "production_version": "NOVEL",
         "project_id": "planning-test",
         "status": "NOT_STARTED",
         "public_episode_count": 4,
         "story_part_count": 16,
         "story_parts_per_episode": 4,
-        "episode_target_minutes": 60,
-        "episode_min_runtime_seconds": 3600,
+        "story_part_target_minutes": 20,
+        "episode_scene_limit": 200,
+        "episode_target_minutes": 80,
+        "episode_min_runtime_seconds": 4800,
         "episodes": [
             {
                 "episode_id": f"EP{number:02d}",
                 "episode_number": number,
                 "story_part_ids": list(range((number - 1) * 4 + 1, number * 4 + 1)),
-                "planned_min_runtime_seconds": 3600,
+                "planned_min_runtime_seconds": 4800,
                 "runtime_seconds": None,
                 "runtime_evidence": None,
+                "visual_scene_count": None,
+                "image_prompt_count": None,
+                "video_prompt_count": None,
+                "motion_scene_count": None,
             }
             for number in range(1, 5)
         ],
@@ -81,19 +90,19 @@ def file_snapshot(folder):
 
 
 class ReleasePlanInitializationTests(unittest.TestCase):
-    def test_new_project_uses_four_hour_long_episodes_and_deferred_chunks(self):
+    def test_new_project_uses_four_eighty_minute_episodes_and_deferred_chunks(self):
         with tempfile.TemporaryDirectory() as temp:
             target = create_project(Path(temp), "planning-test", "Validation fixture")
             manifest = read_json(target / "project_manifest.json")
             status = read_json(target / "stage_status.json")
             schema = read_json(ROOT / "schemas/project_manifest.schema.json")
             self.assertEqual("3.0", manifest["schema_version"])
-            self.assertEqual("3.1.0", manifest["workflow_version"])
+            self.assertEqual("3.2.0", manifest["workflow_version"])
             expected = current_manifest()["targets"]
             for field in [
                 "episode_count", "episode_target_minutes", "episode_min_runtime_seconds",
                 "story_part_count", "story_parts_per_episode", "script_plan_status",
-                "script_chunks", "allow_subchunks",
+                "script_chunks", "allow_subchunks", "story_part_target_minutes", "episode_scene_limit",
             ]:
                 with self.subTest(field=field):
                     self.assertEqual(expected[field], manifest["targets"][field])
@@ -112,7 +121,7 @@ class ReleasePlanInitializationTests(unittest.TestCase):
                 part for episode in plan["episodes"] for part in episode["story_part_ids"]
             ])
             for episode in plan["episodes"]:
-                self.assertEqual(3600, episode["planned_min_runtime_seconds"])
+                self.assertEqual(4800, episode["planned_min_runtime_seconds"])
                 self.assertIsNone(episode["runtime_seconds"])
                 self.assertIsNone(episode["runtime_evidence"])
 
@@ -136,7 +145,7 @@ class ReleasePlanInitializationTests(unittest.TestCase):
             target = create_project(Path(temp), "planning-test", "Validation fixture")
             plan_path = target / "synopsis/release_plan.json"
             plan = read_json(plan_path)
-            plan["episodes"][0]["runtime_seconds"] = 3660
+            plan["episodes"][0]["runtime_seconds"] = 4860
             plan["episodes"][0]["runtime_evidence"] = "reports/EP01_runtime.json"
             plan_path.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
             (target / "script/chunks/synthetic.txt").write_text("Preserve this test input.\n", encoding="utf-8")
@@ -167,6 +176,80 @@ class ReleasePlanInitializationTests(unittest.TestCase):
 
 
 class ManifestPlanningTests(unittest.TestCase):
+    def test_consistent_fractional_part_durations_tolerate_float_roundoff(self):
+        manifest, plan = current_manifest(), current_plan()
+        manifest["targets"].update(story_part_target_minutes=20.1, story_parts_per_episode=3,
+                                    story_part_count=12, episode_target_minutes=60.3,
+                                    episode_min_runtime_seconds=3618)
+        plan.update(story_part_target_minutes=20.1, story_parts_per_episode=3,
+                    story_part_count=12, episode_target_minutes=60.3, episode_min_runtime_seconds=3618)
+        for index, episode in enumerate(plan["episodes"]):
+            episode.update(story_part_ids=list(range(index * 3 + 1, index * 3 + 4)),
+                           planned_min_runtime_seconds=3618)
+        self.assertEqual([], validate_manifest(manifest))
+        self.assertEqual([], validate_release_plan(plan, manifest))
+        plan["story_part_target_minutes"] = 20.2
+        self.assertTrue(validate_release_plan(plan))
+
+    def test_version_default_booleans_cannot_be_numeric_aliases(self):
+        version = read_json(ROOT / "VERSION.json")
+        manifest = read_json(ROOT / "templates/project_manifest.template.json")
+        plan = read_json(ROOT / "templates/release_plan.template.json")
+        status = read_json(ROOT / "templates/stage_status.template.json")
+        chunk = read_json(ROOT / "templates/script_chunk_state.template.json")
+        self.assertEqual([], validate_defaults(version, manifest, plan, status, chunk))
+        version["script_chunk_subdivision"] = 1
+        self.assertTrue(validate_defaults(version, manifest, plan, status, chunk))
+
+    def test_three_one_manifest_and_plan_preserve_their_sixty_minute_targets(self):
+        manifest, plan = current_manifest(), current_plan()
+        for value in [manifest, plan]:
+            value["workflow_version"] = "3.1.0"
+            del value["production_version"]
+        manifest["targets"].update(episode_target_minutes=60, episode_min_runtime_seconds=3600)
+        for field in ["story_part_target_minutes", "episode_scene_limit"]:
+            del manifest["targets"][field]
+            del plan[field]
+        plan.update(episode_target_minutes=60, episode_min_runtime_seconds=3600)
+        for episode in plan["episodes"]:
+            episode["planned_min_runtime_seconds"] = 3600
+            for field in ["visual_scene_count", "image_prompt_count", "video_prompt_count", "motion_scene_count"]:
+                del episode[field]
+        before = copy.deepcopy((manifest, plan))
+        self.assertEqual([], validate_manifest(manifest))
+        self.assertEqual([], validate_release_plan(plan, manifest))
+        self.assertEqual(before, (manifest, plan))
+
+    def test_three_two_requires_profile_part_duration_and_scene_limit(self):
+        for field in ["production_version", "story_part_target_minutes", "episode_scene_limit"]:
+            with self.subTest(field=field):
+                manifest = current_manifest()
+                parent = manifest if field == "production_version" else manifest["targets"]
+                del parent[field]
+                self.assertTrue(validate_manifest(manifest))
+
+    def test_part_duration_must_match_the_public_episode_without_inventing_runtime(self):
+        manifest = current_manifest()
+        manifest["targets"]["story_part_target_minutes"] = 15
+        self.assertTrue(validate_manifest(manifest))
+        for value in [True, False, 0, -1, math.nan, math.inf, "20"]:
+            with self.subTest(value=value):
+                manifest = current_manifest()
+                manifest["targets"]["story_part_target_minutes"] = value
+                self.assertTrue(validate_manifest(manifest))
+
+    def test_scene_limit_is_positive_integer_at_most_two_hundred(self):
+        for value in [1, 199, 200]:
+            with self.subTest(value=value):
+                manifest = current_manifest()
+                manifest["targets"]["episode_scene_limit"] = value
+                self.assertEqual([], validate_manifest(manifest))
+        for value in [201, 0, -1, True, 200.0, "200", math.nan, math.inf]:
+            with self.subTest(value=value):
+                manifest = current_manifest()
+                manifest["targets"]["episode_scene_limit"] = value
+                self.assertTrue(validate_manifest(manifest))
+
     def test_legacy_three_zero_manifest_keeps_its_original_targets(self):
         manifest = legacy_manifest()
         before = copy.deepcopy(manifest)
@@ -239,6 +322,78 @@ class ManifestPlanningTests(unittest.TestCase):
 
 
 class ReleasePlanValidationTests(unittest.TestCase):
+    def test_two_hundred_scene_boundary_and_declared_lower_limit(self):
+        plan = current_plan()
+        plan["episodes"][0].update(visual_scene_count=200, image_prompt_count=200, video_prompt_count=200)
+        self.assertEqual([], validate_release_plan(plan))
+        for field in ["visual_scene_count", "image_prompt_count", "video_prompt_count", "motion_scene_count"]:
+            with self.subTest(field=field):
+                bad = copy.deepcopy(plan)
+                bad["episodes"][0][field] = 201
+                self.assertTrue(validate_release_plan(bad))
+        plan["episode_scene_limit"] = 199
+        self.assertTrue(validate_release_plan(plan))
+
+    def test_novel_known_counts_agree_even_when_another_count_is_unknown(self):
+        for counts in [
+            {"visual_scene_count": 100, "image_prompt_count": 99},
+            {"visual_scene_count": 100, "video_prompt_count": 99},
+            {"image_prompt_count": 100, "video_prompt_count": 99},
+            {"visual_scene_count": 100, "image_prompt_count": 100, "video_prompt_count": 99},
+            {"video_prompt_count": 0},
+        ]:
+            with self.subTest(counts=counts):
+                plan = current_plan()
+                plan["episodes"][0].update(counts)
+                self.assertTrue(validate_release_plan(plan))
+        plan = current_plan()
+        plan["episodes"][0].update(visual_scene_count=100, image_prompt_count=100)
+        self.assertEqual([], validate_release_plan(plan))
+
+    def test_webtoon_has_equal_base_and_motion_counts_and_optional_selected_video(self):
+        for selected in [None, 0, 1, 7, 100]:
+            with self.subTest(selected=selected):
+                manifest, plan = current_manifest(), current_plan()
+                manifest["production_version"] = plan["production_version"] = "WEBTOON_EXPERIMENT"
+                plan["episodes"][0].update(visual_scene_count=100, image_prompt_count=100,
+                                           motion_scene_count=100, video_prompt_count=selected)
+                self.assertEqual([], validate_release_plan(plan, manifest))
+        for counts in [
+            {"visual_scene_count": 100, "image_prompt_count": 99},
+            {"image_prompt_count": 100, "motion_scene_count": 99},
+            {"visual_scene_count": 100, "video_prompt_count": 101},
+            {"image_prompt_count": 100, "video_prompt_count": 101},
+            {"motion_scene_count": 100, "video_prompt_count": 101},
+        ]:
+            with self.subTest(counts=counts):
+                plan = current_plan()
+                plan["production_version"] = "WEBTOON_EXPERIMENT"
+                plan["episodes"][0].update(counts)
+                self.assertTrue(validate_release_plan(plan))
+
+    def test_profiles_are_explicit_and_cannot_mix_manifest_and_plan(self):
+        plan = current_plan()
+        plan["production_version"] = "WEBTOON_EXPERIMENT"
+        self.assertTrue(validate_release_plan(plan, current_manifest()))
+        for profile in [None, "WEBTOON", "novel", True]:
+            with self.subTest(profile=profile):
+                plan = current_plan()
+                plan["production_version"] = profile
+                self.assertTrue(validate_release_plan(plan))
+
+    def test_unknown_prompt_counts_are_allowed_but_invalid_values_and_missing_keys_are_not(self):
+        self.assertEqual([], validate_release_plan(current_plan()))
+        for field in ["visual_scene_count", "image_prompt_count", "video_prompt_count", "motion_scene_count"]:
+            with self.subTest(field=field, value="missing"):
+                plan = current_plan()
+                del plan["episodes"][0][field]
+                self.assertTrue(validate_release_plan(plan))
+            for value in [True, False, -1, 1.5, "100", math.nan, math.inf]:
+                with self.subTest(field=field, value=value):
+                    plan = current_plan()
+                    plan["episodes"][0][field] = value
+                    self.assertTrue(validate_release_plan(plan))
+
     def test_complete_ordered_allocation_is_valid_without_measured_runtime(self):
         plan = current_plan()
         self.assertEqual([], validate_release_plan(plan))
@@ -307,7 +462,7 @@ class ReleasePlanValidationTests(unittest.TestCase):
                 self.assertTrue(validate_release_plan(plan))
 
     def test_runtime_accepts_unknown_or_at_least_the_planned_minimum(self):
-        for runtime in [None, 3600, 3600.5, 3660]:
+        for runtime in [None, 4800, 4800.5, 4860]:
             with self.subTest(runtime=runtime):
                 plan = current_plan()
                 plan["episodes"][0]["runtime_seconds"] = runtime
@@ -316,7 +471,7 @@ class ReleasePlanValidationTests(unittest.TestCase):
                 self.assertEqual([], validate_release_plan(plan))
 
     def test_runtime_below_minimum_and_invalid_measurements_are_rejected(self):
-        for runtime in [3599, 3599.9, 0, -1, True, False, "3600", math.nan, math.inf, -math.inf]:
+        for runtime in [4799, 4799.9, 0, -1, True, False, "4800", math.nan, math.inf, -math.inf]:
             with self.subTest(runtime=runtime):
                 plan = current_plan()
                 plan["episodes"][0]["runtime_seconds"] = runtime
@@ -325,7 +480,7 @@ class ReleasePlanValidationTests(unittest.TestCase):
 
     def test_measured_runtime_requires_nonempty_relative_report_evidence(self):
         missing = current_plan()
-        missing["episodes"][0]["runtime_seconds"] = 3600
+        missing["episodes"][0]["runtime_seconds"] = 4800
         del missing["episodes"][0]["runtime_evidence"]
         self.assertTrue(validate_release_plan(missing))
         for evidence in [
@@ -339,7 +494,7 @@ class ReleasePlanValidationTests(unittest.TestCase):
         ]:
             with self.subTest(evidence=evidence):
                 plan = current_plan()
-                plan["episodes"][0]["runtime_seconds"] = 3600
+                plan["episodes"][0]["runtime_seconds"] = 4800
                 plan["episodes"][0]["runtime_evidence"] = evidence
                 self.assertTrue(validate_release_plan(plan))
 
@@ -351,18 +506,19 @@ class ReleasePlanValidationTests(unittest.TestCase):
 
     def test_runtime_uses_the_declared_minimum_after_a_consistent_plan_change(self):
         plan = current_plan()
-        plan["episode_target_minutes"] = 61
-        plan["episode_min_runtime_seconds"] = 3660
+        plan["episode_target_minutes"] = 81
+        plan["story_part_target_minutes"] = 20.25
+        plan["episode_min_runtime_seconds"] = 4860
         for episode in plan["episodes"]:
-            episode["planned_min_runtime_seconds"] = 3660
-        plan["episodes"][0]["runtime_seconds"] = 3659
+            episode["planned_min_runtime_seconds"] = 4860
+        plan["episodes"][0]["runtime_seconds"] = 4859
         plan["episodes"][0]["runtime_evidence"] = "reports/EP01_runtime.json"
         self.assertTrue(validate_release_plan(plan))
-        plan["episodes"][0]["runtime_seconds"] = 3660
+        plan["episodes"][0]["runtime_seconds"] = 4860
         self.assertEqual([], validate_release_plan(plan))
 
     def test_per_episode_plan_cannot_lower_the_public_minimum(self):
-        for minimum in [3599, 0, -1, True, False, "3600", None, math.nan, math.inf, -math.inf]:
+        for minimum in [4799, 0, -1, True, False, "4800", None, math.nan, math.inf, -math.inf]:
             with self.subTest(minimum=minimum):
                 plan = current_plan()
                 plan["episodes"][0]["planned_min_runtime_seconds"] = minimum
@@ -372,7 +528,7 @@ class ReleasePlanValidationTests(unittest.TestCase):
         for field, value in [
             ("project_id", "different-project"), ("public_episode_count", 5),
             ("story_part_count", 20), ("story_parts_per_episode", 5),
-            ("episode_target_minutes", 61), ("episode_min_runtime_seconds", 3660),
+            ("episode_target_minutes", 81), ("episode_min_runtime_seconds", 4860),
         ]:
             with self.subTest(field=field):
                 plan = current_plan()

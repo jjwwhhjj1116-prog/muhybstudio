@@ -1,13 +1,13 @@
 {
   "schema_version": "3.0",
-  "workflow_version": "3.1.0",
+  "workflow_version": "3.2.0",
   "project_id": "replace-me",
   "status": "NOT_STARTED",
   "public_episode_count": 4,
   "story_part_count": 16,
   "story_parts_per_episode": 4,
-  "episode_target_minutes": 60,
-  "episode_min_runtime_seconds": 3600,
+  "episode_target_minutes": 80,
+  "episode_min_runtime_seconds": 4800,
   "episodes": [
     {
       "episode_id": "EP01",
@@ -18,9 +18,13 @@
         3,
         4
       ],
-      "planned_min_runtime_seconds": 3600,
+      "planned_min_runtime_seconds": 4800,
       "runtime_seconds": null,
-      "runtime_evidence": null
+      "runtime_evidence": null,
+      "visual_scene_count": null,
+      "image_prompt_count": null,
+      "video_prompt_count": null,
+      "motion_scene_count": null
     },
     {
       "episode_id": "EP02",
@@ -31,9 +35,13 @@
         7,
         8
       ],
-      "planned_min_runtime_seconds": 3600,
+      "planned_min_runtime_seconds": 4800,
       "runtime_seconds": null,
-      "runtime_evidence": null
+      "runtime_evidence": null,
+      "visual_scene_count": null,
+      "image_prompt_count": null,
+      "video_prompt_count": null,
+      "motion_scene_count": null
     },
     {
       "episode_id": "EP03",
@@ -44,9 +52,13 @@
         11,
         12
       ],
-      "planned_min_runtime_seconds": 3600,
+      "planned_min_runtime_seconds": 4800,
       "runtime_seconds": null,
-      "runtime_evidence": null
+      "runtime_evidence": null,
+      "visual_scene_count": null,
+      "image_prompt_count": null,
+      "video_prompt_count": null,
+      "motion_scene_count": null
     },
     {
       "episode_id": "EP04",
@@ -57,9 +69,16 @@
         15,
         16
       ],
-      "planned_min_runtime_seconds": 3600,
+      "planned_min_runtime_seconds": 4800,
       "runtime_seconds": null,
-      "runtime_evidence": null
+      "runtime_evidence": null,
+      "visual_scene_count": null,
+      "image_prompt_count": null,
+      "video_prompt_count": null,
+      "motion_scene_count": null
     }
-  ]
+  ],
+  "story_part_target_minutes": 20,
+  "episode_scene_limit": 200,
+  "production_version": "NOVEL"
 }

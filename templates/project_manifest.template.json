@@ -3,18 +3,20 @@
   "project_id": "replace-me",
   "title": "작품명",
   "format": "episodic-animation",
-  "workflow_version": "3.1.0",
+  "workflow_version": "3.2.0",
   "workflow_git_sha": null,
   "targets": {
     "episode_count": 4,
-    "episode_target_minutes": 60,
+    "episode_target_minutes": 80,
     "runtime_tolerance_seconds": null,
     "script_chunks": null,
     "allow_subchunks": true,
-    "episode_min_runtime_seconds": 3600,
+    "episode_min_runtime_seconds": 4800,
     "story_part_count": 16,
     "story_parts_per_episode": 4,
-    "script_plan_status": "NOT_STARTED"
+    "script_plan_status": "NOT_STARTED",
+    "story_part_target_minutes": 20,
+    "episode_scene_limit": 200
   },
   "execution": {
     "auto_continue_chunks": true,
@@ -46,5 +48,6 @@
     "sha256": null,
     "role": "style_reference_only_not_story_canon",
     "public_copy_allowed": false
-  }
+  },
+  "production_version": "NOVEL"
 }
