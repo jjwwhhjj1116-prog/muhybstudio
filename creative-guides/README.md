@@ -3,13 +3,13 @@
 2026-10-09. 현행 workflow 3.2.0의 창작 기준을 단계별로 정리했다. 사용자가 승인한 개선 10안과 내부 16부×약 20분→공개 4화×80분·회차당 200장면 이하 편성을 반영했다. 같은 이야기의 기존 소설판과 신규 실험 웹툰판을 구별한다. 운영·코드 전체와 구판 기록을 집필에 한꺼번에 주입하지 않는다.
 
 1. [시놉시스·등장인물·세계관 작성](01_SYNOPSIS_CHARACTERS_WORLD.md)
-2. [스크립트 작성·글쓰기 개선·검수](02_SCRIPT_WRITING.md)
+2. 스크립트: [기존 소설판 집필·개선·검수](02_SCRIPT_WRITING.md) / [신규 웹툰판 집필·개선·검수](02B_WEBTOON_SCRIPT_WRITING.md)
 3. [캐릭터시트·이미지·Flow 캐릭터 등록](03_CHARACTER_SHEETS.md)
 4. [선행 장면 분할·시각화 프롬프트](04_VISUALIZATION_PROMPTS.md)
 
 [개선 10안과 개정 범위](../references/CREATIVE_POLICY_CHANGE_3_2.md)의 시놉시스 1~6안·대본 7~10안이 현행 문서에 적용됐다. 이전 [진단 제안](../references/CREATIVE_GUIDELINES_REVIEW_2026_10.md)은 작성 당시의 기록이며 번호 체계를 혼동하지 않는다. 완료 작품·승인 원고는 변경하지 않는다.
 
-현행 문체·형식·설정 근거는 policy/01~08 및 관련 contracts/stages/workflow 문서다. 최신 사용자 지시가 우선한다. 무조건 짧게 쓰기·어미 금지·대사 비율·예시 복제 등의 폐기 규칙은 다시 적용하지 않는다. [두 버전 제작 지침](../policy/08_TWO_VERSION_PRODUCTION.md)에 따라 공통 설정은 공유하고 표현·매핑·편집은 분리한다.
+현행 문체·형식·설정 근거는 policy/01~09 및 관련 contracts/stages/workflow 문서다. 2026-10-10 웹툰판 전용 집필 기준과 별도 전달 메모 서식을 추가했다. NOVEL은 policy/01_WRITING.md, WEBTOON_EXPERIMENT는 policy/09_WEBTOON_WRITING.md를 선택한다. 최신 사용자 지시가 우선한다. 무조건 짧게 쓰기·어미 금지·대사 비율·예시 복제 등의 폐기 규칙은 다시 적용하지 않는다. [두 버전 제작 지침](../policy/08_TWO_VERSION_PRODUCTION.md)에 따라 공통 설정은 공유하고 표현·매핑·편집은 분리한다.
 
 집필 시 모든 파일을 중복 주입하지 않는다. 이번 단계의 정리본과 관련 작품 정본·직전 원문을 읽고, 같은 내용의 원본 지침을 또 한 벌의 검사표로 겹쳐 적용하지 않는다. 적용 해석이 충돌하면 최신 사용자 지시와 현행 policy 원문으로 확인한다.
 
