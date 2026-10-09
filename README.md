@@ -9,6 +9,7 @@
 - [작업 계약](AGENTS.md) · [시작과 복구](workflow/00_BOOT_SEQUENCE.md)
 - [세 PC 동기화](workflow/12_THREE_PC_SYNC.md) · [현재 진행 상태](coordination/STATUS.md)
 - [신작 시놉시스·4화 편성](policy/07_SYNOPSIS_AND_RELEASE_PLAN.md) · [개정 범위와 읽는 순서](references/RELEASE_POLICY_CHANGE_2026_10.md)
+- [창작 네 단계별 지침](creative-guides/README.md) · [시놉시스/대본 개선 제안](references/CREATIVE_GUIDELINES_REVIEW_2026_10.md) — 개선 후보는 검토 제안이며 현행 정책을 자동 변경하지 않는다.
 - [현행 집필 지침](policy/01_WRITING.md) · [작품 기억](policy/02_STORY_MEMORY.md) · [인과·발화 검수](policy/03_REVIEW.md)
 - [연속 영상 설계](policy/04_CONTINUOUS_ANIMATION.md) · [Flow 실행 계약](policy/05_FLOW_EXECUTION.md) · [음성·편집·납품](policy/06_DELIVERY.md)
 
